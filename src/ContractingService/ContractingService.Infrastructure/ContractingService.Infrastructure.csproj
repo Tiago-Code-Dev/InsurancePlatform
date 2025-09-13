@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\ContractingService.Application\ContractingService.Application.csproj" />
+    <ProjectReference Include="..\ContractingService.Domain\ContractingService.Domain.csproj" />
+    <ProjectReference Include="..\..\Shared\Shared.CrossCutting\Shared.CrossCutting.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>
