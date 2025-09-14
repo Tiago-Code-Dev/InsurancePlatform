@@ -1,46 +1,49 @@
-﻿namespace ProposalService.Api.Controllers;
+﻿namespace ContractingService.Api.Controllers;
 
 using Microsoft.AspNetCore.Mvc;
-using ProposalService.Application.DTOs;
-using ProposalService.Application.Interfaces;
+using ContractingService.Application.DTOs;
+using ContractingService.Application.Interfaces;
 
 [ApiController]
-[Route("api/[controller]")]
-public class ProposalController : ControllerBase
+[Route("api/v1/contracts")]
+public class ContractController : ControllerBase
 {
-    private readonly IProposalAppService _proposalAppService;
+    private readonly IContractAppService _contractAppService;
 
-    public ProposalController(IProposalAppService proposalAppService)
+    public ContractController(IContractAppService contractAppService)
     {
-        _proposalAppService = proposalAppService;
+        _contractAppService = contractAppService;
     }
 
+    // POST /api/v1/contracts
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CustomerDto customer, [FromBody] ContractDto contract)
+    public async Task<IActionResult> Create([FromBody] ContractDto contract)
     {
-        var result = await _proposalAppService.CreateAsync(customer, contract);
+        var result = await _contractAppService.CreateAsync(contract);
         return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
     }
 
+    // GET /api/v1/contracts/{id}
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetById(Guid id)
     {
-        var result = await _proposalAppService.GetByIdAsync(id);
-        if (result == null) return NotFound();
-        return Ok(result);
+        var result = await _contractAppService.GetByIdAsync(id);
+        return result is null ? NotFound() : Ok(result);
     }
 
-    [HttpPut("{id:guid}/approve")]
-    public async Task<IActionResult> Approve(Guid id)
+    // PUT /api/v1/contracts/{id}/activate
+    [HttpPut("{id:guid}/activate")]
+    public async Task<IActionResult> Activate(Guid id)
     {
-        await _proposalAppService.ApproveAsync(id);
+        await _contractAppService.ActivateAsync(id);
         return NoContent();
     }
 
-    [HttpPut("{id:guid}/reject")]
-    public async Task<IActionResult> Reject(Guid id)
+    // PUT /api/v1/contracts/{id}/terminate
+    [HttpPut("{id:guid}/terminate")]
+    public async Task<IActionResult> Terminate(Guid id)
     {
-        await _proposalAppService.RejectAsync(id);
+        await _contractAppService.TerminateAsync(id);
         return NoContent();
     }
 }
