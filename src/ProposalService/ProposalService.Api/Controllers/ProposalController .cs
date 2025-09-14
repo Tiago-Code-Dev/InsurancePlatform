@@ -31,6 +31,14 @@ namespace ProposalService.API.Controllers
             return CustomResponse(result);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await _proposalAppService.GetAllAsync();
+            return CustomResponse(result);
+        }
+
+
         [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetById(Guid id)
         {

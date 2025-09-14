@@ -7,4 +7,6 @@ public interface IProposalRepository
     Task<Proposal?> GetByIdAsync(Guid id);
     Task AddAsync(Proposal proposal);
     Task UpdateAsync(Proposal proposal);
+    Task<List<Proposal>> GetAllAsync();
+
 }

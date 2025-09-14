@@ -33,4 +33,13 @@ public class ProposalRepository : IProposalRepository
         _context.Proposals.Update(proposal);
         await _context.SaveChangesAsync();
     }
+
+    public async Task<List<Proposal>> GetAllAsync()
+    {
+        return await _context.Proposals
+            .Include(p => p.Customer)
+            .Include(p => p.Contract)
+            .ToListAsync();
+    }
+
 }

@@ -101,4 +101,16 @@ public class ProposalAppService : IProposalAppService
             Premium = proposal.Contract.Premium.Amount,
             Status = proposal.Status.ToString()
         };
+
+    public async Task<CustomResponse<IEnumerable<ProposalDto>>> GetAllAsync()
+    {
+        var proposals = await _proposalRepository.GetAllAsync();
+
+        if (proposals == null || !proposals.Any())
+            return CustomResponse<IEnumerable<ProposalDto>>.Ok(new List<ProposalDto>());
+
+        var mapped = proposals.Select(MapToDto).ToList();
+
+        return CustomResponse<IEnumerable<ProposalDto>>.Ok(mapped);
+    }
 }

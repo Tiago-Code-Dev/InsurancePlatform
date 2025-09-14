@@ -1,11 +1,12 @@
 ﻿namespace ContractingService.Api.Extensions;
 
-using Microsoft.EntityFrameworkCore;
 using ContractingService.Application.Interfaces;
 using ContractingService.Application.Services;
 using ContractingService.Domain.Interfaces;
 using ContractingService.Infrastructure.Context;
 using ContractingService.Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
+using Shared.CrossCutting.Notifications;
 
 public static class ServiceCollectionExtensions
 {
@@ -22,6 +23,7 @@ public static class ServiceCollectionExtensions
             services.AddDbContext<ContractDbContext>(o => o.UseSqlServer(conn));
         }
 
+        services.AddScoped<INotifier, Notifier>();
         services.AddScoped<IContractRepository, ContractRepository>();
         services.AddScoped<IContractAppService, ContractAppService>();
 
