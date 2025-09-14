@@ -1,11 +1,15 @@
 using ContractingService.Api.Extensions;
 using ContractingService.Api.Validation;
+using ContractingService.Application.Services;
 using ContractingService.Application.Validators;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Polly;
+using Polly.Extensions.Http;
 using Serilog;
 using Shared.CrossCutting.Extensions;
 using Shared.CrossCutting.Middleware;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -60,7 +64,28 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+builder.Services.AddHttpClient("ResilientClient")
+    .AddPolicyHandler(HttpPolicyExtensions
+        .HandleTransientHttpError()
+        .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+        .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)))) // Retry com backoff exponencial
+    .AddPolicyHandler(HttpPolicyExtensions
+        .HandleTransientHttpError()
+        .CircuitBreakerAsync(5, TimeSpan.FromSeconds(30))); // Circuit breaker
+
+builder.Services.AddHttpClient("ResilientClientWithTimeout")
+    .AddPolicyHandler(Policy.TimeoutAsync<HttpResponseMessage>(5)) // timeout de 5 segundos
+    .AddPolicyHandler(Policy<HttpResponseMessage>
+        .Handle<Exception>()
+        .FallbackAsync(new HttpResponseMessage(System.Net.HttpStatusCode.OK)
+        {
+            Content = new StringContent("{\"message\":\"Service temporarily unavailable, using fallback\"}")
+        }));
+
+
 builder.Services.AddHealthChecks(); //healthcheck
+
+builder.Services.AddScoped<ExternalApiService>();
 
 var app = builder.Build();
 
