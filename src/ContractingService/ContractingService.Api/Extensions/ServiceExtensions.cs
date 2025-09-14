@@ -12,6 +12,7 @@ public static class ServiceExtensions
         services.AddJwtAuthenticationConfig(configuration);
         services.AddValidationConfig();
         services.AddResilientHttpClients();
+        services.AddContractingServices(configuration);
         services.AddHealthChecks();
         services.RegisterContractingMessaging();
         services.AddScoped<ExternalApiService>();
