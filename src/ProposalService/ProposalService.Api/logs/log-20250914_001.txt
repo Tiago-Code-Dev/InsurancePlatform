@@ -25,3 +25,4 @@ System.IO.IOException: Failed to bind to address http://127.0.0.1:5144: address 
    at Microsoft.Extensions.Hosting.Internal.Host.<StartAsync>b__14_1(IHostedService service, CancellationToken token)
    at Microsoft.Extensions.Hosting.Internal.Host.ForeachService[T](IEnumerable`1 services, CancellationToken token, Boolean concurrent, Boolean abortOnFirstException, List`1 exceptions, Func`3 operation)
 2025-09-14 01:10:05.124 -03:00 [WRN] Failed to determine the https port for redirect.
+2025-09-14 02:14:19.028 -03:00 [WRN] Failed to determine the https port for redirect.
