@@ -1,17 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Shared.CrossCutting.Auth;
+using Shared.CrossCutting.Controllers;
+using Shared.CrossCutting.Response;
+using Shared.CrossCutting.Notifications;
 
-namespace ProposalService.Api.Controllers
+namespace Shared.CrossCutting.Controllers
 {
     [ApiController]
     [Route("api/v1/auth")]
-    public class AuthController : ControllerBase
+    public class AuthController : MainController
     {
         private readonly IJwtTokenService _jwtTokenService;
         private readonly JwtSettings _jwtSettings;
 
-        public AuthController(IJwtTokenService jwtTokenService, IOptions<JwtSettings> jwtSettings)
+        public AuthController(
+            IJwtTokenService jwtTokenService,
+            IOptions<JwtSettings> jwtSettings,
+            INotifier notifier) : base(notifier)
         {
             _jwtTokenService = jwtTokenService;
             _jwtSettings = jwtSettings.Value;
@@ -20,7 +26,10 @@ namespace ProposalService.Api.Controllers
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginRequest request)
         {
-            // 🔹 Simulação de autenticação
+            if (!ModelState.IsValid)
+                return CustomResponse(ModelState);
+
+            // Simulação de autenticação
             if (request.Username == "admin" && request.Password == "123456")
             {
                 var token = _jwtTokenService.GenerateToken(
@@ -28,10 +37,11 @@ namespace ProposalService.Api.Controllers
                     roles: new[] { Roles.Admin }
                 );
 
-                return Ok(new { Token = token });
+                return CustomResponse(new { Token = token });
             }
 
-            return Unauthorized("Invalid credentials");
+            NotifyError("Invalid credentials");
+            return CustomResponse();
         }
     }
 
