@@ -1,11 +1,12 @@
 ﻿namespace ProposalService.Application.Interfaces;
 
 using ProposalService.Application.DTOs;
+using Shared.CrossCutting.Response;
 
 public interface IProposalAppService
 {
-    Task<ProposalDto> CreateAsync(CustomerDto customer, ContractDto contract);
-    Task<ProposalDto?> GetByIdAsync(Guid id);
-    Task ApproveAsync(Guid proposalId);
-    Task RejectAsync(Guid proposalId);
+    Task<CustomResponse<ProposalDto>> CreateAsync(CustomerDto customer, ContractDto contract);
+    Task<CustomResponse<ProposalDto>> GetByIdAsync(Guid id);
+    Task<CustomResponse<Result>> ApproveAsync(Guid proposalId);
+    Task<CustomResponse<Result>> RejectAsync(Guid proposalId);
 }
