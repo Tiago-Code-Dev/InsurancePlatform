@@ -1,29 +1,32 @@
 ﻿namespace ContractingService.Api.Controllers;
 
-using Microsoft.AspNetCore.Mvc;
+using ContractingService.Api.Contracts.Requests;
 using ContractingService.Application.DTOs;
 using ContractingService.Application.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
-[Route("api/v1/contracts")]
-public class ContractController : ControllerBase
+[Route("api/v1/[controller]")]
+public class ContractsController : ControllerBase
 {
     private readonly IContractAppService _contractAppService;
 
-    public ContractController(IContractAppService contractAppService)
+    public ContractsController(IContractAppService contractAppService)
     {
         _contractAppService = contractAppService;
     }
 
-    // POST /api/v1/contracts
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] ContractDto contract)
+    public async Task<IActionResult> Create([FromBody] CreateContractRequest request)
     {
-        var result = await _contractAppService.CreateAsync(contract);
+        var result = await _contractAppService.CreateAsync(
+            request.Insured,
+            request.Coverages ?? new List<CoverageDto>()
+        );
+
         return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
     }
 
-    // GET /api/v1/contracts/{id}
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetById(Guid id)
     {
@@ -31,7 +34,6 @@ public class ContractController : ControllerBase
         return result is null ? NotFound() : Ok(result);
     }
 
-    // PUT /api/v1/contracts/{id}/activate
     [HttpPut("{id:guid}/activate")]
     public async Task<IActionResult> Activate(Guid id)
     {
@@ -39,7 +41,6 @@ public class ContractController : ControllerBase
         return NoContent();
     }
 
-    // PUT /api/v1/contracts/{id}/terminate
     [HttpPut("{id:guid}/terminate")]
     public async Task<IActionResult> Terminate(Guid id)
     {

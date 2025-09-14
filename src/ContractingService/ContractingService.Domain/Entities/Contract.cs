@@ -48,4 +48,12 @@ public class Contract
 
         Status = ContractStatus.Canceled;
     }
+
+    public void Terminate()
+    {
+        if (Status == ContractStatus.Terminated)
+            throw new InvalidOperationException("Contract is already terminated.");
+
+        Status = ContractStatus.Terminated;
+    }
 }
