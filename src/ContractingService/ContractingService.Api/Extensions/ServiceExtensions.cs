@@ -13,7 +13,7 @@ public static class ServiceExtensions
         services.AddValidationConfig();
         services.AddResilientHttpClients();
         services.AddHealthChecks();
-
+        services.RegisterContractingMessaging();
         services.AddScoped<ExternalApiService>();
 
         return services;

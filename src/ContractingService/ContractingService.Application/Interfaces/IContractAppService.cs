@@ -9,5 +9,5 @@ public interface IContractAppService
     Task ActivateAsync(Guid contractId);
     Task CancelAsync(Guid contractId);
     Task TerminateAsync(Guid id);
-    Task CreateAsync(ContractDto contract);
+   
 }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
-using Shared.Contracts.Events;
 using Shared.CrossCutting.Messaging;
+using Shared.CrossCutting.Messaging.Events;
 using Shared.CrossCutting.Messaging.RabbitMq;
 
 namespace ProposalService.Application.Integration;

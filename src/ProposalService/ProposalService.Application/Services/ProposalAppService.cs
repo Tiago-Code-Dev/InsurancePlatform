@@ -2,13 +2,12 @@
 
 using ProposalService.Application.DTOs;
 using ProposalService.Application.Interfaces;
-using ProposalService.Application.Commands;
 using ProposalService.Domain.Entities;
 using ProposalService.Domain.Interfaces;
 using ProposalService.Domain.ValueObjects;
 using ProposalService.Domain.Enums;
 using ProposalService.Application.Integration;
-using Shared.Contracts.Events;
+using Shared.CrossCutting.Messaging.Events;
 
 public class ProposalAppService : IProposalAppService
 {
