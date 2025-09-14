@@ -1,0 +1,28 @@
+2025-09-14 00:50:26.026 -03:00 [INF] User profile is available. Using 'C:\Users\srica\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-09-14 00:50:26.120 -03:00 [INF] Now listening on: http://localhost:5131
+2025-09-14 00:50:26.123 -03:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-09-14 00:50:26.124 -03:00 [INF] Hosting environment: Development
+2025-09-14 00:50:26.126 -03:00 [INF] Content root path: C:\Users\srica\OneDrive\Desktop\InsurancePlatform\src\ContractingService\ContractingService.Api
+2025-09-14 00:51:31.634 -03:00 [INF] Application is shutting down...
+2025-09-14 00:52:09.998 -03:00 [INF] User profile is available. Using 'C:\Users\srica\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-09-14 00:52:10.075 -03:00 [INF] Now listening on: http://localhost:5131
+2025-09-14 00:52:10.078 -03:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-09-14 00:52:10.079 -03:00 [INF] Hosting environment: Development
+2025-09-14 00:52:10.080 -03:00 [INF] Content root path: C:\Users\srica\OneDrive\Desktop\InsurancePlatform\src\ContractingService\ContractingService.Api
+2025-09-14 00:52:25.722 -03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5131/swagger/index.html - null null
+2025-09-14 00:52:26.531 -03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5131/swagger/index.html - 200 null text/html;charset=utf-8 810.7303ms
+2025-09-14 00:52:26.549 -03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5131/swagger/swagger-ui.css - null null
+2025-09-14 00:52:26.551 -03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5131/swagger/index.css - null null
+2025-09-14 00:52:26.551 -03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5131/swagger/swagger-ui-bundle.js - null null
+2025-09-14 00:52:26.551 -03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5131/swagger/index.js - null null
+2025-09-14 00:52:26.551 -03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5131/swagger/swagger-ui-standalone-preset.js - null null
+2025-09-14 00:52:26.562 -03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5131/swagger/index.js - 200 null application/javascript;charset=utf-8 11.0115ms
+2025-09-14 00:52:26.570 -03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5131/swagger/index.css - 200 152 text/css 19.3649ms
+2025-09-14 00:52:26.570 -03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5131/swagger/swagger-ui.css - 200 23647 text/css 21.9752ms
+2025-09-14 00:52:26.577 -03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5131/swagger/swagger-ui-bundle.js - 200 417980 text/javascript 26.3471ms
+2025-09-14 00:52:26.577 -03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5131/swagger/swagger-ui-standalone-preset.js - 200 70860 text/javascript 26.041ms
+2025-09-14 00:52:26.696 -03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5131/swagger/v1/swagger.json - null null
+2025-09-14 00:52:26.706 -03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5131/swagger/favicon-32x32.png - null null
+2025-09-14 00:52:26.710 -03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5131/swagger/favicon-32x32.png - 200 628 image/png 4.147ms
+2025-09-14 00:52:26.766 -03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5131/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 69.7243ms
+2025-09-14 00:53:56.924 -03:00 [INF] Application is shutting down...

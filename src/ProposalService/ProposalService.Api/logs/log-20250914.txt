@@ -1,0 +1,32 @@
+2025-09-14 00:46:21.197 -03:00 [INF] User profile is available. Using 'C:\Users\srica\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-09-14 00:46:21.304 -03:00 [INF] Now listening on: http://localhost:5144
+2025-09-14 00:46:21.307 -03:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-09-14 00:46:21.308 -03:00 [INF] Hosting environment: Development
+2025-09-14 00:46:21.309 -03:00 [INF] Content root path: C:\Users\srica\OneDrive\Desktop\InsurancePlatform\src\ProposalService\ProposalService.Api
+2025-09-14 00:51:53.416 -03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5144/swagger - null null
+2025-09-14 00:51:53.443 -03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5144/swagger - 301 0 null 27.6027ms
+2025-09-14 00:51:53.455 -03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5144/swagger/index.html - null null
+2025-09-14 00:51:53.511 -03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5144/swagger/index.html - 200 null text/html;charset=utf-8 55.6345ms
+2025-09-14 00:51:53.527 -03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5144/swagger/index.css - null null
+2025-09-14 00:51:53.527 -03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5144/swagger/swagger-ui.css - null null
+2025-09-14 00:51:53.528 -03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5144/swagger/swagger-ui-bundle.js - null null
+2025-09-14 00:51:53.528 -03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5144/swagger/swagger-ui-standalone-preset.js - null null
+2025-09-14 00:51:53.528 -03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5144/swagger/index.js - null null
+2025-09-14 00:51:53.545 -03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5144/swagger/index.js - 200 null application/javascript;charset=utf-8 16.1553ms
+2025-09-14 00:51:53.548 -03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5144/swagger/index.css - 200 152 text/css 20.5307ms
+2025-09-14 00:51:53.548 -03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5144/swagger/swagger-ui.css - 200 23647 text/css 20.9931ms
+2025-09-14 00:51:53.554 -03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5144/swagger/swagger-ui-bundle.js - 200 417980 text/javascript 25.8057ms
+2025-09-14 00:51:53.554 -03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5144/swagger/swagger-ui-standalone-preset.js - 200 70860 text/javascript 25.6572ms
+2025-09-14 00:51:53.680 -03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5144/swagger/v1/swagger.json - null null
+2025-09-14 00:51:53.689 -03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5144/swagger/favicon-32x32.png - null null
+2025-09-14 00:51:53.693 -03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5144/swagger/favicon-32x32.png - 200 628 image/png 3.8185ms
+2025-09-14 00:51:53.749 -03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5144/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 69.4151ms
+2025-09-14 00:53:08.107 -03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5144/api/v1/auth/login - application/json 49
+2025-09-14 00:53:08.113 -03:00 [WRN] Failed to determine the https port for redirect.
+2025-09-14 00:53:08.842 -03:00 [INF] Executing endpoint 'ProposalService.Api.Controllers.AuthController.Login (ProposalService.Api)'
+2025-09-14 00:53:08.853 -03:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Login(ProposalService.Api.Controllers.LoginRequest) on controller ProposalService.Api.Controllers.AuthController (ProposalService.Api).
+2025-09-14 00:53:08.962 -03:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType0`1[[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-09-14 00:53:08.969 -03:00 [INF] Executed action ProposalService.Api.Controllers.AuthController.Login (ProposalService.Api) in 111.9401ms
+2025-09-14 00:53:08.971 -03:00 [INF] Executed endpoint 'ProposalService.Api.Controllers.AuthController.Login (ProposalService.Api)'
+2025-09-14 00:53:08.973 -03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5144/api/v1/auth/login - 200 null application/json; charset=utf-8 865.7317ms
+2025-09-14 00:53:58.362 -03:00 [INF] Application is shutting down...

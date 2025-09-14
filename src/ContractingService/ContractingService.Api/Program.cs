@@ -4,6 +4,7 @@ using ContractingService.Application.Validators;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Serilog;
+using Shared.CrossCutting.Extensions;
 using Shared.CrossCutting.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,11 +20,45 @@ builder.Host.UseSerilog();
 // Services
 builder.Services.AddContractingServices(builder.Configuration);
 builder.Services.AddControllers();
+
+builder.Services.AddJwtAuthentication(builder.Configuration); // ? JWT
+
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssemblyContaining<InsuredDtoValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateContractRequestValidator>();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new() { Title = "Insurance Platform - Proposal Service", Version = "v1" });
+
+    // ?? Configuração de autenticação JWT no Swagger
+    c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        Description = "Enter 'Bearer {token}'"
+    });
+
+    c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+    {
+        {
+            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+            {
+                Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                {
+                    Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
+
 
 var app = builder.Build();
 
