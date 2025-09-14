@@ -26,3 +26,5 @@
 2025-09-14 00:52:26.710 -03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5131/swagger/favicon-32x32.png - 200 628 image/png 4.147ms
 2025-09-14 00:52:26.766 -03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5131/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 69.7243ms
 2025-09-14 00:53:56.924 -03:00 [INF] Application is shutting down...
+2025-09-14 01:06:16.099 -03:00 [WRN] Failed to determine the https port for redirect.
+2025-09-14 01:09:35.349 -03:00 [WRN] Failed to determine the https port for redirect.

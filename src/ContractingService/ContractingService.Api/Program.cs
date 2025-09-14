@@ -15,13 +15,14 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day)
     .CreateLogger();
 
-builder.Host.UseSerilog();
+builder.Host.UseSerilog((context, services, configuration) =>
+    configuration.ReadFrom.Configuration(context.Configuration));
 
 // Services
 builder.Services.AddContractingServices(builder.Configuration);
 builder.Services.AddControllers();
 
-builder.Services.AddJwtAuthentication(builder.Configuration); // ? JWT
+builder.Services.AddJwtAuthentication(builder.Configuration); // JWT
 
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssemblyContaining<InsuredDtoValidator>();
@@ -30,9 +31,9 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new() { Title = "Insurance Platform - Proposal Service", Version = "v1" });
+    c.SwaggerDoc("v1", new() { Title = "Insurance Platform - Contracting Service", Version = "v1" });
 
-    // ?? Configuração de autenticação JWT no Swagger
+    // autenticação JWT no Swagger
     c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -59,6 +60,7 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+builder.Services.AddHealthChecks(); //healthcheck
 
 var app = builder.Build();
 
@@ -73,4 +75,7 @@ app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.UseHttpsRedirection();
 app.MapControllers();
+
+app.MapHealthChecks("/health"); // health
+
 app.Run();

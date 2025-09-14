@@ -16,7 +16,8 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day)
     .CreateLogger();
 
-builder.Host.UseSerilog();
+builder.Host.UseSerilog((context, services, configuration) =>
+    configuration.ReadFrom.Configuration(context.Configuration));
 
 // Services
 builder.Services.AddProposalServices(builder.Configuration);
@@ -63,6 +64,9 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+builder.Services.AddHealthChecks(); // healthcheck
+
+
 var app = builder.Build();
 
 // Pipeline
@@ -81,5 +85,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+
+app.MapHealthChecks("/health"); //health
 
 app.Run();
