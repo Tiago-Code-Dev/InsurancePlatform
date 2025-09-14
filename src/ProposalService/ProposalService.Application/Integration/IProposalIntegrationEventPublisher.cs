@@ -1,4 +1,4 @@
-﻿using Shared.Contracts.Events;
+﻿using Shared.CrossCutting.Messaging.Events;
 
 namespace ProposalService.Application.Integration;
 

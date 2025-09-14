@@ -82,9 +82,4 @@ public class ContractAppService : IContractAppService
         await _contractRepository.UpdateAsync(contract);
     }
 
-
-    public Task CreateAsync(ContractDto contract)
-    {
-        throw new NotImplementedException();
-    }
 }
