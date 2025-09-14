@@ -71,4 +71,20 @@ public class ContractAppService : IContractAppService
             }).ToList(),
             Status = contract.Status.ToString()
         };
+
+    public async Task TerminateAsync(Guid contractId)
+    {
+        var contract = await _contractRepository.GetByIdAsync(contractId);
+        if (contract is null)
+            throw new KeyNotFoundException("Contract not found.");
+
+        contract.Terminate();
+        await _contractRepository.UpdateAsync(contract);
+    }
+
+
+    public Task CreateAsync(ContractDto contract)
+    {
+        throw new NotImplementedException();
+    }
 }

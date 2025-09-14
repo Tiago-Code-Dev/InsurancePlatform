@@ -1,4 +1,8 @@
 using ContractingService.Api.Extensions;
+using ContractingService.Api.Validation;
+using ContractingService.Application.Validators;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Serilog;
 using Shared.CrossCutting.Middleware;
 
@@ -15,6 +19,9 @@ builder.Host.UseSerilog();
 // Services
 builder.Services.AddContractingServices(builder.Configuration);
 builder.Services.AddControllers();
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssemblyContaining<InsuredDtoValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateContractRequestValidator>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

@@ -1,4 +1,8 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using ProposalService.Api.Extensions;
+using ProposalService.Api.Validation;
+using ProposalService.Application.Validators;
 using Serilog;
 using Shared.CrossCutting.Middleware;
 
@@ -13,6 +17,11 @@ Log.Logger = new LoggerConfiguration()
 builder.Host.UseSerilog();
 
 // Services
+builder.Services.AddProposalServices(builder.Configuration);
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssemblyContaining<CustomerDtoValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateProposalRequestValidator>();
+
 builder.Services.AddProposalServices(builder.Configuration);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
