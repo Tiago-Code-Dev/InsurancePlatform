@@ -1,5 +1,7 @@
 ﻿namespace Shared.CrossCutting.Middleware;
 
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using System.Net;
 using System.Net.Http;
 using System.Text.Json;
