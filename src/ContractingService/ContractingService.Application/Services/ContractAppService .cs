@@ -1,11 +1,12 @@
-﻿namespace ContractingService.Application.Services;
-
-using ContractingService.Application.DTOs;
+﻿using ContractingService.Application.DTOs;
 using ContractingService.Application.Interfaces;
 using ContractingService.Domain.Entities;
+using ContractingService.Domain.Enums;
 using ContractingService.Domain.Interfaces;
 using ContractingService.Domain.ValueObjects;
-using ContractingService.Domain.Enums;
+using Shared.CrossCutting.Response;
+
+namespace ContractingService.Application.Services;
 
 public class ContractAppService : IContractAppService
 {
@@ -16,44 +17,104 @@ public class ContractAppService : IContractAppService
         _contractRepository = contractRepository;
     }
 
-    public async Task<ContractDto> CreateAsync(InsuredDto insuredDto, List<CoverageDto> coverageDtos)
+    public async Task<CustomResponse<ContractDto>> CreateAsync(InsuredDto insuredDto, List<CoverageDto> coverageDtos)
     {
-        var insured = new Insured(insuredDto.Name, new Document(insuredDto.Document), new Email(insuredDto.Email));
-        var contract = new Contract(insured);
-
-        foreach (var coverageDto in coverageDtos)
+        try
         {
-            var coverage = new Coverage(coverageDto.Name, Enum.Parse<CoverageType>(coverageDto.Type), new Money(coverageDto.Premium));
-            contract.AddCoverage(coverage);
+            var insured = new Insured(insuredDto.Name, new Document(insuredDto.Document), new Email(insuredDto.Email));
+            var contract = new Contract(insured);
+
+            foreach (var coverageDto in coverageDtos)
+            {
+                var coverage = new Coverage(coverageDto.Name, Enum.Parse<CoverageType>(coverageDto.Type), new Money(coverageDto.Premium));
+                contract.AddCoverage(coverage);
+            }
+
+            await _contractRepository.AddAsync(contract);
+
+            return CustomResponse<ContractDto>.Created(MapToDto(contract));
         }
-
-        await _contractRepository.AddAsync(contract);
-
-        return MapToDto(contract);
+        catch (Exception)
+        {
+            return CustomResponse<ContractDto>.InternalServerError();
+        }
     }
 
-    public async Task<ContractDto?> GetByIdAsync(Guid id)
+    public async Task<CustomResponse<ContractDto>> GetByIdAsync(Guid id)
     {
-        var contract = await _contractRepository.GetByIdAsync(id);
-        return contract == null ? null : MapToDto(contract);
+        try
+        {
+            var contract = await _contractRepository.GetByIdAsync(id);
+
+            if (contract is null)
+                return CustomResponse<ContractDto>.Fail("Contract not found.");
+
+            return CustomResponse<ContractDto>.Ok(MapToDto(contract));
+        }
+        catch (Exception)
+        {
+            return CustomResponse<ContractDto>.InternalServerError();
+        }
     }
 
-    public async Task ActivateAsync(Guid contractId)
+    public async Task<CustomResponse<Result>> ActivateAsync(Guid contractId)
     {
-        var contract = await _contractRepository.GetByIdAsync(contractId);
-        if (contract == null) return;
+        try
+        {
+            var contract = await _contractRepository.GetByIdAsync(contractId);
 
-        contract.Activate();
-        await _contractRepository.UpdateAsync(contract);
+            if (contract is null)
+                return CustomResponse<Result>.Fail("Contract not found.");
+
+            contract.Activate();
+            await _contractRepository.UpdateAsync(contract);
+
+            return CustomResponse<Result>.Ok(Result.Ok("Contract activated successfully."));
+        }
+        catch (Exception)
+        {
+            return CustomResponse<Result>.InternalServerError();
+        }
     }
 
-    public async Task CancelAsync(Guid contractId)
+    public async Task<CustomResponse<Result>> CancelAsync(Guid contractId)
     {
-        var contract = await _contractRepository.GetByIdAsync(contractId);
-        if (contract == null) return;
+        try
+        {
+            var contract = await _contractRepository.GetByIdAsync(contractId);
 
-        contract.Cancel();
-        await _contractRepository.UpdateAsync(contract);
+            if (contract is null)
+                return CustomResponse<Result>.Fail("Contract not found.");
+
+            contract.Cancel();
+            await _contractRepository.UpdateAsync(contract);
+
+            return CustomResponse<Result>.Ok(Result.Ok("Contract canceled successfully."));
+        }
+        catch (Exception)
+        {
+            return CustomResponse<Result>.InternalServerError();
+        }
+    }
+
+    public async Task<CustomResponse<Result>> TerminateAsync(Guid contractId)
+    {
+        try
+        {
+            var contract = await _contractRepository.GetByIdAsync(contractId);
+
+            if (contract is null)
+                return CustomResponse<Result>.Fail("Contract not found.");
+
+            contract.Terminate();
+            await _contractRepository.UpdateAsync(contract);
+
+            return CustomResponse<Result>.Ok(Result.Ok("Contract terminated successfully."));
+        }
+        catch (Exception)
+        {
+            return CustomResponse<Result>.InternalServerError();
+        }
     }
 
     private static ContractDto MapToDto(Contract contract) =>
@@ -71,15 +132,4 @@ public class ContractAppService : IContractAppService
             }).ToList(),
             Status = contract.Status.ToString()
         };
-
-    public async Task TerminateAsync(Guid contractId)
-    {
-        var contract = await _contractRepository.GetByIdAsync(contractId);
-        if (contract is null)
-            throw new KeyNotFoundException("Contract not found.");
-
-        contract.Terminate();
-        await _contractRepository.UpdateAsync(contract);
-    }
-
 }

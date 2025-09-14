@@ -1,13 +1,12 @@
-﻿namespace ProposalService.Application.Services;
-
-using ProposalService.Application.DTOs;
+﻿using ProposalService.Application.DTOs;
+using ProposalService.Application.Integration;
 using ProposalService.Application.Interfaces;
 using ProposalService.Domain.Entities;
+using ProposalService.Domain.Enums;
 using ProposalService.Domain.Interfaces;
 using ProposalService.Domain.ValueObjects;
-using ProposalService.Domain.Enums;
-using ProposalService.Application.Integration;
 using Shared.CrossCutting.Messaging.Events;
+using Shared.CrossCutting.Response;
 
 public class ProposalAppService : IProposalAppService
 {
@@ -20,60 +19,76 @@ public class ProposalAppService : IProposalAppService
         _eventPublisher = eventPublisher;
     }
 
-    public async Task<ProposalDto> CreateAsync(CustomerDto customerDto, ContractDto contractDto)
+    public async Task<CustomResponse<ProposalDto>> CreateAsync(CustomerDto customerDto, ContractDto contractDto)
     {
-        var customer = new Customer(
-            customerDto.Name,
-            new Document(customerDto.Document),
-            new Email(customerDto.Email)
-        );
-
-        var contract = new Contract(
-            Enum.Parse<ContractType>(contractDto.Type),
-            new Money(contractDto.Premium),
-            contractDto.StartDate,
-            contractDto.EndDate
-        );
-
-        var proposal = new Proposal(customer, contract);
-
-        await _proposalRepository.AddAsync(proposal);
-
-        var proposalEvent = new ProposalCreatedEvent
+        try
         {
-            ProposalId = proposal.Id,
-            CustomerName = proposal.Customer.Name,
-            Amount = proposal.Contract.Premium.Amount,
-            CreatedAt = DateTime.UtcNow
-        };
+            var customer = new Customer(
+                customerDto.Name,
+                new Document(customerDto.Document),
+                new Email(customerDto.Email)
+            );
 
-        await _eventPublisher.PublishAsync(proposalEvent);
+            var contract = new Contract(
+                Enum.Parse<ContractType>(contractDto.Type),
+                new Money(contractDto.Premium),
+                contractDto.StartDate,
+                contractDto.EndDate
+            );
 
-        return MapToDto(proposal);
+            var proposal = new Proposal(customer, contract);
+
+            await _proposalRepository.AddAsync(proposal);
+
+            var proposalEvent = new ProposalCreatedEvent
+            {
+                ProposalId = proposal.Id,
+                CustomerName = proposal.Customer.Name,
+                Amount = proposal.Contract.Premium.Amount,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            await _eventPublisher.PublishAsync(proposalEvent);
+
+            return CustomResponse<ProposalDto>.Created(MapToDto(proposal));
+        }
+        catch (Exception)
+        {
+            return CustomResponse<ProposalDto>.InternalServerError();
+        }
     }
 
-    public async Task<ProposalDto?> GetByIdAsync(Guid id)
+    public async Task<CustomResponse<ProposalDto>> GetByIdAsync(Guid id)
     {
         var proposal = await _proposalRepository.GetByIdAsync(id);
-        return proposal == null ? null : MapToDto(proposal);
+        if (proposal == null)
+            return CustomResponse<ProposalDto>.Fail("Proposta não encontrada.");
+
+        return CustomResponse<ProposalDto>.Ok(MapToDto(proposal));
     }
 
-    public async Task ApproveAsync(Guid proposalId)
+    public async Task<CustomResponse<Result>> ApproveAsync(Guid proposalId)
     {
         var proposal = await _proposalRepository.GetByIdAsync(proposalId);
-        if (proposal == null) return;
+        if (proposal == null)
+            return CustomResponse<Result>.Fail("Proposta não encontrada.");
 
         proposal.Approve();
         await _proposalRepository.UpdateAsync(proposal);
+
+        return CustomResponse<Result>.Ok(Result.Success());
     }
 
-    public async Task RejectAsync(Guid proposalId)
+    public async Task<CustomResponse<Result>> RejectAsync(Guid proposalId)
     {
         var proposal = await _proposalRepository.GetByIdAsync(proposalId);
-        if (proposal == null) return;
+        if (proposal == null)
+            return CustomResponse<Result>.Fail("Proposta não encontrada.");
 
         proposal.Reject();
         await _proposalRepository.UpdateAsync(proposal);
+
+        return CustomResponse<Result>.Ok(Result.Success());
     }
 
     private static ProposalDto MapToDto(Proposal proposal) =>
