@@ -1,5 +1,7 @@
-﻿using ProposalService.Application.Interfaces;
+﻿using ProposalService.Application.Integration;
+using ProposalService.Application.Interfaces;
 using ProposalService.Application.Services;
+using Shared.CrossCutting.Extensions;
 
 namespace ProposalService.Api.Extensions;
 
@@ -14,6 +16,9 @@ public static class ServiceExtensions
         services.AddValidationConfig();
         services.AddResilientHttpClients();
         services.AddHealthChecks();
+        services.AddProposalServices(configuration);
+        services.AddRabbitMqEventBus(configuration);
+        services.AddScoped<IProposalIntegrationEventPublisher, ProposalIntegrationEventPublisher>();
         services.AddProposalServices(configuration);
 
         services.AddScoped<IExternalApiService, ExternalApiService>();
