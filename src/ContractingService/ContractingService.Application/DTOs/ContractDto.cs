@@ -3,12 +3,11 @@
 using System;
 using System.Collections.Generic;
 
-public class ContractDto
-{
-    public Guid Id { get; set; }
-    public string InsuredName { get; set; } = string.Empty;
-    public string InsuredDocument { get; set; } = string.Empty;
-    public string InsuredEmail { get; set; } = string.Empty;
-    public List<CoverageDto> Coverages { get; set; } = new();
-    public string Status { get; set; } = string.Empty;
-}
+public record ContractDto(
+    Guid Id,
+    string InsuredName,
+    string InsuredDocument,
+    string InsuredEmail,
+    List<CoverageDto> Coverages,
+    string Status,
+    Guid ProposalId);

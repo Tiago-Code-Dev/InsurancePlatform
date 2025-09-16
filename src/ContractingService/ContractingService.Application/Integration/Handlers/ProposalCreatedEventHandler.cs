@@ -15,12 +15,7 @@ public class ProposalCreatedEventHandler
 
     public async Task HandleAsync(ProposalCreatedEvent evt)
     {
-        var insured = new InsuredDto
-        {
-            Name = evt.CustomerName,
-            Document = evt.CustomerDocument
-        };
-
+        var insured = new InsuredDto(evt.CustomerName, evt.CustomerDocument, string.Empty, evt.ProposalId);
         var coverages = new List<CoverageDto>();
 
         await _contractAppService.CreateAsync(insured, coverages);

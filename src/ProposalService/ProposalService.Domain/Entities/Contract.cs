@@ -18,9 +18,16 @@ public class Contract
         if (endDate <= startDate)
             throw new DomainException("Contract end date must be after start date.");
 
+        if (premium is null)
+            throw new DomainException("Premium is required.");
+
+        if (premium.Amount <= 0)
+            throw new DomainException("Premium must be greater than zero.");
+
+
         Id = Guid.NewGuid();
         Type = type;
-        Premium = premium ?? throw new DomainException("Premium is required.");
+        Premium = premium;
         StartDate = startDate;
         EndDate = endDate;
     }

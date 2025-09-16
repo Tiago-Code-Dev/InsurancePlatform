@@ -4,16 +4,10 @@ namespace ContractingService.Api.Extensions;
 
 public static class AuthenticationExtensions
 {
-    public static IServiceCollection AddJwtAuthenticationConfig(this IServiceCollection services, IConfiguration configuration)
-    {
+    public static IServiceCollection AddJwtAuthenticationConfig(this IServiceCollection services, IConfiguration configuration) =>
         services.AddJwtAuthentication(configuration);
-        return services;
-    }
-
-    public static IApplicationBuilder UseJwtAuthenticationConfig(this IApplicationBuilder app)
-    {
-        app.UseAuthentication();
-        app.UseAuthorization();
-        return app;
-    }
+ 
+    public static IApplicationBuilder UseJwtAuthenticationConfig(this IApplicationBuilder app) =>
+       app.UseAuthentication()
+           .UseAuthorization();
 }

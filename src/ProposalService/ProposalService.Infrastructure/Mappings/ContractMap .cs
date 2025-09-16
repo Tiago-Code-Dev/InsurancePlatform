@@ -13,22 +13,23 @@ public class ContractMap : IEntityTypeConfiguration<Contract>
 
         builder.Property(c => c.Type)
             .IsRequired()
-            .HasConversion<string>(); // enum → string
+            .HasConversion<string>();
 
-        builder.Property(c => c.StartDate).IsRequired();
-        builder.Property(c => c.EndDate).IsRequired();
+        builder.Property(c => c.StartDate)
+            .IsRequired();
 
-        builder.OwnsOne(c => c.Premium, premium =>
+        builder.Property(c => c.EndDate)
+            .IsRequired();
+
+        builder.OwnsOne(c => c.Premium, m =>
         {
-            premium.Property(p => p.Amount)
-                .HasColumnName("PremiumAmount")
-                .HasColumnType("decimal(18,2)")
-                .IsRequired();
+            m.Property(p => p.Amount)
+             .HasPrecision(18, 2)
+             .IsRequired();
 
-            premium.Property(p => p.Currency)
-                .HasColumnName("PremiumCurrency")
-                .HasMaxLength(3)
-                .IsRequired();
+            m.Property(p => p.Currency)
+             .HasMaxLength(3)
+             .IsRequired();
         });
     }
 }

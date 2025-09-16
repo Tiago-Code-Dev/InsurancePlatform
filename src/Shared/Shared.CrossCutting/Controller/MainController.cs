@@ -11,10 +11,8 @@ public abstract class MainController : ControllerBase
 {
     private readonly INotifier _notifier;
 
-    protected MainController(INotifier notifier)
-    {
+    protected MainController(INotifier notifier) =>
         _notifier = notifier;
-    }
 
     protected bool IsOperationValid()
     {
@@ -23,45 +21,48 @@ public abstract class MainController : ControllerBase
 
     protected void NotifyModelStateErrors(ModelStateDictionary modelState)
     {
-        var errors = modelState.Values.SelectMany(e => e.Errors);
-        foreach (var error in errors)
+        foreach (var kvp in modelState)
         {
-            var errorMsg = error.Exception == null ? error.ErrorMessage : error.Exception.Message;
-            _notifier.Handle(new Notification(errorMsg));
+            var field = kvp.Key;
+            var errors = kvp.Value.Errors;
+
+            foreach (var error in errors)
+            {
+                var errorMsg = error.Exception == null ? error.ErrorMessage : error.Exception.Message;
+                _notifier.Handle(new Notification(field, errorMsg));
+            }
         }
     }
 
-    protected IActionResult CustomResponse(object result = null)
+    protected IActionResult CustomResponse(object? result = null)
     {
+        if (result is ICustomResponse custom)
+        {
+            return StatusCode(custom.StatusCode, result);
+        }
+
         if (IsOperationValid())
         {
-            return Ok(new CustomResponse<object>
-            {
-                Success = true,
-                Data = result
-            });
+            return Ok(CustomResponse<object>.Ok(result));
         }
 
-        return BadRequest(new CustomResponse<object>
-        {
-            Success = false,
-            Data = null,
-            Messages = _notifier.GetNotifications()
-                .Select(n => new CustomMessage { Message = n.Message })
-                .ToList()
-        });
+        var messages = _notifier.GetNotifications()
+            .Select(n =>
+                string.IsNullOrEmpty(n.Field)
+                    ? new MessageResponse(null, n.Message)
+                    : new MessageResponse(n.Field, n.Message)
+            ).ToList();
+
+        return BadRequest(CustomResponse<object>.Fail(messages));
     }
-    protected void NotifyError(string message)
-    {
+
+    protected void NotifyError(string message) =>
         _notifier.Handle(new Notification(message));
-    }
 
     protected IActionResult CustomResponse(ModelStateDictionary modelState)
     {
         if (!modelState.IsValid)
-        {
             NotifyModelStateErrors(modelState);
-        }
 
         return CustomResponse();
     }

@@ -9,10 +9,7 @@ using Shared.CrossCutting.Auth;
 
 public static class AuthenticationExtensions
 {
-    /// <summary>
-    /// Lê a seção "Jwt" do appsettings, registra JwtSettings,
-    /// configura AddAuthentication/AddJwtBearer e AddAuthorization.
-    /// </summary>
+
     public static IServiceCollection AddJwtAuthentication(
         this IServiceCollection services,
         IConfiguration configuration)
@@ -31,7 +28,7 @@ public static class AuthenticationExtensions
             })
             .AddJwtBearer(options =>
             {
-                options.RequireHttpsMetadata = false; // habilite true em prod
+                options.RequireHttpsMetadata = false; 
                 options.SaveToken = true;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
@@ -42,13 +39,12 @@ public static class AuthenticationExtensions
                     ValidIssuer = settings.Issuer,
                     ValidAudience = settings.Audience,
                     IssuerSigningKey = new SymmetricSecurityKey(keyBytes),
-                    ClockSkew = TimeSpan.Zero // tokens expiram no minuto exato
+                    ClockSkew = TimeSpan.Zero 
                 };
             });
 
         services.AddAuthorization();
 
-        // Serviço para emissão de tokens
         services.AddSingleton<IJwtTokenService, JwtTokenService>();
 
         return services;
