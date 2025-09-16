@@ -9,19 +9,20 @@ public class ProposalRepository : IProposalRepository
 {
     private readonly ProposalDbContext _context;
 
-    public ProposalRepository(ProposalDbContext context)
-    {
-        _context = context;
-    }
+    public ProposalRepository(ProposalDbContext context) => _context = context; 
 
-    public async Task<Proposal?> GetByIdAsync(Guid id)
-    {
-        return await _context.Proposals
+    public async Task<Proposal?> GetByIdAsync(Guid id) =>
+        await _context.Proposals
             .Include(p => p.Customer)
             .Include(p => p.Contract)
             .FirstOrDefaultAsync(p => p.Id == id);
-    }
 
+    public async Task<List<Proposal>> GetAllAsync() =>
+        await _context.Proposals
+            .Include(p => p.Customer)
+            .Include(p => p.Contract)
+            .ToListAsync();
+    
     public async Task AddAsync(Proposal proposal)
     {
         await _context.Proposals.AddAsync(proposal);
@@ -34,12 +35,6 @@ public class ProposalRepository : IProposalRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task<List<Proposal>> GetAllAsync()
-    {
-        return await _context.Proposals
-            .Include(p => p.Customer)
-            .Include(p => p.Contract)
-            .ToListAsync();
-    }
+   
 
 }

@@ -19,7 +19,6 @@ public static class ServiceExtensions
         services.AddProposalServices(configuration);
         services.AddRabbitMqEventBus(configuration);
         services.AddScoped<IProposalIntegrationEventPublisher, ProposalIntegrationEventPublisher>();
-        services.AddProposalServices(configuration);
 
         services.AddScoped<IExternalApiService, ExternalApiService>();
 

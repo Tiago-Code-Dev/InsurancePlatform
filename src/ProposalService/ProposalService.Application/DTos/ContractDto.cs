@@ -1,6 +1,7 @@
 ﻿namespace ProposalService.Application.DTOs;
 
 using System;
+using System.ComponentModel.DataAnnotations;
 
 public class ContractDto
 {

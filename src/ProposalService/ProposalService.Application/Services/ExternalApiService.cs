@@ -17,7 +17,10 @@ namespace ProposalService.Application.Services
             var client = _httpClientFactory.CreateClient("ResilientClient");
             var response = await client.GetAsync("https://api.externa.com/data");
 
-            response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode)
+            {
+                return $"{{\"success\": false, \"messages\": [{{\"message\": \"API error: {response.StatusCode}\"}}]}}";
+            }
 
             return await response.Content.ReadAsStringAsync();
         }

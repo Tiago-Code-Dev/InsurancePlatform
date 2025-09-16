@@ -33,4 +33,9 @@ public class ContractRepository : IContractRepository
         _context.Contracts.Update(contract);
         await _context.SaveChangesAsync();
     }
+
+    public async Task<bool> ExistsAsync(Guid id)
+    {
+        return await _context.Contracts.AnyAsync(c => c.Id == id);
+    }
 }

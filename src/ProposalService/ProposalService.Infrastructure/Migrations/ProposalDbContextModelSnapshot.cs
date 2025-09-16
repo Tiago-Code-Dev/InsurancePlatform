@@ -98,14 +98,13 @@ namespace ProposalService.Infrastructure.Migrations
                                 .HasColumnType("uniqueidentifier");
 
                             b1.Property<decimal>("Amount")
-                                .HasColumnType("decimal(18,2)")
-                                .HasColumnName("PremiumAmount");
+                                .HasPrecision(18, 2)
+                                .HasColumnType("decimal(18,2)");
 
                             b1.Property<string>("Currency")
                                 .IsRequired()
                                 .HasMaxLength(3)
-                                .HasColumnType("nvarchar(3)")
-                                .HasColumnName("PremiumCurrency");
+                                .HasColumnType("nvarchar(3)");
 
                             b1.HasKey("ContractId");
 
@@ -128,8 +127,8 @@ namespace ProposalService.Infrastructure.Migrations
 
                             b1.Property<string>("Number")
                                 .IsRequired()
-                                .HasColumnType("nvarchar(max)")
-                                .HasColumnName("DocumentNumber");
+                                .HasMaxLength(14)
+                                .HasColumnType("nvarchar(14)");
 
                             b1.HasKey("CustomerId");
 
@@ -146,8 +145,8 @@ namespace ProposalService.Infrastructure.Migrations
 
                             b1.Property<string>("Address")
                                 .IsRequired()
-                                .HasColumnType("nvarchar(max)")
-                                .HasColumnName("EmailAddress");
+                                .HasMaxLength(200)
+                                .HasColumnType("nvarchar(200)");
 
                             b1.HasKey("CustomerId");
 

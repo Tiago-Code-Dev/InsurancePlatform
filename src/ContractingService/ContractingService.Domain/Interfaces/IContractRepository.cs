@@ -7,4 +7,6 @@ public interface IContractRepository
     Task<Contract?> GetByIdAsync(Guid id);
     Task AddAsync(Contract contract);
     Task UpdateAsync(Contract contract);
+    Task<bool> ExistsAsync(Guid id);
+
 }

@@ -8,7 +8,13 @@ public class CreateContractRequestValidator : AbstractValidator<CreateContractRe
 {
     public CreateContractRequestValidator()
     {
-        RuleFor(x => x.Insured).SetValidator(new InsuredDtoValidator());
-        RuleForEach(x => x.Coverages).SetValidator(new CoverageDtoValidator());
+
+        RuleFor(x => x.Insured)
+           .NotNull().WithMessage("The insured is mandatory")
+           .SetValidator(new InsuredDtoValidator());
+
+        RuleFor(x => x.Coverages)
+            .NotEmpty().WithMessage("At least one coverage must be reported.")
+            .ForEach(c => c.SetValidator(new CoverageDtoValidator()));
     }
 }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ContractingService.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,7 +18,8 @@ namespace ContractingService.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Document_Number = table.Column<string>(type: "nvarchar(14)", maxLength: 14, nullable: false),
-                    Email_Address = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false)
+                    Email_Address = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    ProposalId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {

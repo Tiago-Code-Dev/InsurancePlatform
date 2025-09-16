@@ -1,16 +1,16 @@
-﻿using Shared.CrossCutting.Middleware;
+﻿using Serilog;
+using Shared.CrossCutting.Middleware;
 
 namespace ContractingService.Api.Extensions;
 
 public static class ApplicationExtensions
 {
-    public static IApplicationBuilder ConfigureMiddleware(this IApplicationBuilder app, IWebHostEnvironment env)
-    {
-        app.UseSwaggerDocumentation(env);
-        app.UseHttpsRedirection();
-        app.UseJwtAuthenticationConfig();
-        app.UseMiddleware<ErrorHandlingMiddleware>();
+    public static IApplicationBuilder ConfigureMiddleware(this IApplicationBuilder app, IWebHostEnvironment env) =>
 
-        return app;
-    }
+         app.UseSwaggerDocumentation(env)
+           .UseCorrelationId()
+           .UseSerilogRequestLogging()
+           .UseHttpsRedirection()
+           .UseJwtAuthenticationConfig()
+           .UseMiddleware<ErrorHandlingMiddleware>();
 }

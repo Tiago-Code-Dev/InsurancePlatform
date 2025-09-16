@@ -2,6 +2,8 @@
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Serilog;
+using Shared.CrossCutting.Response;
 using System.Net;
 using System.Net.Http;
 using System.Text.Json;
@@ -25,18 +27,24 @@ public class ErrorHandlingMiddleware
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Unhandled exception");
+            Log.Error(ex, "Unhandled exception caught by ErrorHandlingMiddleware. Path: {Path}, TraceId: {TraceId}",
+               context.Request.Path, context.TraceIdentifier);
 
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             context.Response.ContentType = "application/json";
 
-            var response = new
-            {
-                error = ex.Message,
-                traceId = context.TraceIdentifier
-            };
+            //var response = new
+            //{
+            //    error = ex.Message,
+            //    traceId = context.TraceIdentifier
+            //};
 
-            await context.Response.WriteAsync(JsonSerializer.Serialize(response));
+            var response = CustomResponse<object>.InternalServerError();
+
+            var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+            await context.Response.WriteAsync(JsonSerializer.Serialize(response, options));
+
+           // await context.Response.WriteAsync(JsonSerializer.Serialize(response));
         }
     }
 }

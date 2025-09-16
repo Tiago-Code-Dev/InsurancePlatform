@@ -1,4 +1,5 @@
 ﻿using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Filters;
 
 namespace ContractingService.Api.Extensions;
 
@@ -8,16 +9,21 @@ public static class SwaggerExtensions
     {
         services.AddSwaggerGen(c =>
         {
-            c.SwaggerDoc("v1", new() { Title = "Insurance Platform - Contracting Service", Version = "v1" });
+            c.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Title = "Insurance Platform API - Contracting",
+                Version = "v1",
+                Description = "Microserviço responsável pela contratação de propostas"
+            });
 
+            // JWT Bearer
             c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
+                Description = "JWT Authorization header usando Bearer. Exemplo: \"Authorization: Bearer {token}\"",
                 Name = "Authorization",
-                Type = SecuritySchemeType.Http,
-                Scheme = "bearer",
-                BearerFormat = "JWT",
                 In = ParameterLocation.Header,
-                Description = "Enter 'Bearer {token}'"
+                Type = SecuritySchemeType.ApiKey,
+                Scheme = "Bearer"
             });
 
             c.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -25,12 +31,21 @@ public static class SwaggerExtensions
                 {
                     new OpenApiSecurityScheme
                     {
-                        Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
                     },
-                    Array.Empty<string>()
+                    new string[] {}
                 }
             });
+
+            c.ExampleFilters();
         });
+
+        services.AddSwaggerExamplesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
+
 
         return services;
     }
@@ -40,7 +55,11 @@ public static class SwaggerExtensions
         if (env.IsDevelopment())
         {
             app.UseSwagger();
-            app.UseSwaggerUI();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Contracting API v1");
+                c.RoutePrefix = string.Empty;
+            });
         }
 
         return app;

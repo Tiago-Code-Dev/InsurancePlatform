@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ContractingService.Infrastructure.Migrations
 {
     [DbContext(typeof(ContractDbContext))]
-    [Migration("20250914091557_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250916014648_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -84,6 +84,9 @@ namespace ContractingService.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<Guid>("ProposalId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 

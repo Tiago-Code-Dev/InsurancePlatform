@@ -51,7 +51,7 @@ public class RabbitMqEventBus : IEventBus, IDisposable
 
         var body = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(@event));
         var props = _channel.CreateBasicProperties();
-        props.DeliveryMode = 2; // persistente
+        props.DeliveryMode = 2;
 
         _channel.BasicPublish(
             exchange: _options.Exchange,

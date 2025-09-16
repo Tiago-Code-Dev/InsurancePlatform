@@ -10,12 +10,15 @@ public class Customer
     public Document Document { get; private set; }
     public Email Email { get; private set; }
 
-    private Customer() { } // EF Core
+    private Customer() { } 
 
     public Customer(string name, Document document, Email email)
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new DomainException("Customer name cannot be empty.");
+
+        if (name.Length > 200)
+            throw new DomainException("Customer name must be 200 characters or fewer.");
 
         Id = Guid.NewGuid();
         Name = name;

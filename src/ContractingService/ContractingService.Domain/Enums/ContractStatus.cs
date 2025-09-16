@@ -1,4 +1,6 @@
-﻿namespace ContractingService.Domain.Enums;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ContractingService.Domain.Enums;
 
 public enum ContractStatus
 {

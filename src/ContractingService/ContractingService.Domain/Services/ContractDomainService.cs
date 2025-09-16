@@ -7,7 +7,10 @@ public class ContractDomainService
 {
     public void ValidateContract(Contract contract)
     {
-        if (contract.Insured == null)
+        if (contract is null)
+            throw new DomainException("Contract cannot be null.");
+
+        if (contract.Insured is null)
             throw new DomainException("Contract must have an insured person.");
 
         if (!contract.Coverages.Any())

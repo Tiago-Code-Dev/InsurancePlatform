@@ -14,18 +14,18 @@ public class CustomerMap : IEntityTypeConfiguration<Customer>
             .IsRequired()
             .HasMaxLength(200);
 
-        builder.OwnsOne(c => c.Document, doc =>
+        builder.OwnsOne(c => c.Document, d =>
         {
-            doc.Property(d => d.Number)
-                .HasColumnName("DocumentNumber")
-                .IsRequired();
+            d.Property(x => x.Number)
+             .HasMaxLength(14)
+             .IsRequired();
         });
 
-        builder.OwnsOne(c => c.Email, email =>
+        builder.OwnsOne(c => c.Email, e =>
         {
-            email.Property(e => e.Address)
-                .HasColumnName("EmailAddress")
-                .IsRequired();
+            e.Property(x => x.Address)
+             .HasMaxLength(200)
+             .IsRequired();
         });
     }
 }
