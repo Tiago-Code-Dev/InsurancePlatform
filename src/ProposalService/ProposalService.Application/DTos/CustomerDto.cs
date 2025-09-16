@@ -1,4 +1,6 @@
-﻿namespace ProposalService.Application.DTOs;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ProposalService.Application.DTOs;
 
 public class CustomerDto
 {

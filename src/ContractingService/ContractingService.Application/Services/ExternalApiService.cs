@@ -1,23 +1,29 @@
 ﻿namespace ContractingService.Application.Services;
 
 using ContractingService.Application.Interfaces;
+using Microsoft.Extensions.Configuration;
+using Shared.Contracts.Proposals;
+using System.Net.Http.Json;
 
 public class ExternalApiService : IExternalApiService
 {
     private readonly IHttpClientFactory _httpClientFactory;
+    private readonly IConfiguration _configuration;
 
-    public ExternalApiService(IHttpClientFactory httpClientFactory)
+    public ExternalApiService(IHttpClientFactory httpClientFactory, IConfiguration configuration)
     {
         _httpClientFactory = httpClientFactory;
+        _configuration = configuration;
     }
 
-    public async Task<string> GetDataAsync()
+    public async Task<ProposalResponse?> GetProposalDetailsAsync(Guid proposalId)
     {
-        var client = _httpClientFactory.CreateClient("ResilientClient");
-        var response = await client.GetAsync("https://api.externa.com/data");
+        var client = _httpClientFactory.CreateClient("ProposalService");
+        var response = await client.GetAsync($"/api/v1/proposals/{proposalId}");
 
-        response.EnsureSuccessStatusCode();
+        if (!response.IsSuccessStatusCode)
+            return null;
 
-        return await response.Content.ReadAsStringAsync();
+        return await response.Content.ReadFromJsonAsync<ProposalResponse>(); ;
     }
 }

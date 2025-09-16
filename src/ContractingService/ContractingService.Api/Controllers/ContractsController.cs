@@ -22,15 +22,10 @@ public class ContractsController : MainController
 
     [Authorize]
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateContractRequest request)
-    {
-        if (!ModelState.IsValid)
-            return CustomResponse(ModelState);
-
-        var result = await _contractAppService.CreateAsync(request.Insured, request.Coverages);
-
-        return CustomResponse(result);
-    }
+    public async Task<IActionResult> Create([FromBody] CreateContractRequest request) =>
+        !ModelState.IsValid
+            ? CustomResponse(ModelState)
+            : CustomResponse(await _contractAppService.CreateAsync(request.Insured, request.Coverages));
 
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetById(Guid id)
@@ -40,17 +35,13 @@ public class ContractsController : MainController
         if (result == null)
         {
             NotifyError("Contract not found.");
-            return CustomResponse();
+            return NotFound(CustomResponse());
         }
-
         return CustomResponse(result); 
     }
 
     [Authorize(Roles = Roles.Admin)]
     [HttpPut("{id:guid}/terminate")]
-    public async Task<IActionResult> Terminate(Guid id)
-    {
-        var result = await _contractAppService.TerminateAsync(id);
-        return CustomResponse(result); 
-    }
+    public async Task<IActionResult> Terminate(Guid id) =>
+        CustomResponse(await _contractAppService.TerminateAsync(id)); 
 }

@@ -2,8 +2,4 @@
 
 using ContractingService.Application.DTOs;
 
-public class CreateContractRequest
-{
-    public InsuredDto Insured { get; set; } = default!;
-    public List<CoverageDto> Coverages { get; set; } = new();
-}
+public record CreateContractRequest(InsuredDto Insured, List<CoverageDto> Coverages);

@@ -1,8 +1,10 @@
-﻿namespace ContractingService.Application.Interfaces
+﻿using Shared.Contracts.Proposals;
+
+namespace ContractingService.Application.Interfaces
 
 {
     public interface IExternalApiService
     {
-        Task<string> GetDataAsync();
+        Task<ProposalResponse?> GetProposalDetailsAsync(Guid proposaId);
     }
 }

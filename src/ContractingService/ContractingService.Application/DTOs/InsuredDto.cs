@@ -1,8 +1,3 @@
 ﻿namespace ContractingService.Application.DTOs;
 
-public class InsuredDto
-{
-    public string Name { get; set; } = string.Empty;
-    public string Document { get; set; } = string.Empty;
-    public string Email { get; set; } = string.Empty;
-}
+public record InsuredDto(string Name, string Document, string Email, Guid ProposalId);

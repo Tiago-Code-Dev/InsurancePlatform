@@ -10,16 +10,24 @@ public class Insured
     public Document Document { get; private set; }
     public Email Email { get; private set; }
 
-    private Insured() { } // EF Core
+ 
+    public Guid ProposalId { get; private set; }
 
-    public Insured(string name, Document document, Email email)
+    private Insured() { }
+
+    public Insured(string name, Document document, Email email, Guid proposalId)
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new DomainException("Insured name cannot be empty.");
 
-        Id = Guid.NewGuid();
-        Name = name;
+        if (name.Length > 200)
+            throw new DomainException("Insured name must be 200 characters or fewer.");
+
         Document = document ?? throw new DomainException("Document is required.");
         Email = email ?? throw new DomainException("Email is required.");
+        ProposalId = proposalId == Guid.Empty ? throw new DomainException("ProposalId is required.") : proposalId;
+
+        Id = Guid.NewGuid();
+        Name = name;
     }
 }

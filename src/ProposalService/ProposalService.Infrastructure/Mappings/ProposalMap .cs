@@ -12,15 +12,21 @@ public class ProposalMap : IEntityTypeConfiguration<Proposal>
 
         builder.Property(p => p.Status)
             .IsRequired()
-            .HasConversion<string>(); // grava como string no banco
+            .HasConversion<string>();
+
+        builder.Property(p => p.CreatedAt)
+            .IsRequired();
+
+        builder.Property(p => p.ApprovedAt)
+            .IsRequired(false);
 
         builder.HasOne(p => p.Customer)
-            .WithMany() // uma proposta tem um cliente
+            .WithMany()
             .HasForeignKey("CustomerId")
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasOne(p => p.Contract)
-            .WithMany() // uma proposta tem um contrato
+            .WithMany()
             .HasForeignKey("ContractId")
             .OnDelete(DeleteBehavior.Cascade);
     }

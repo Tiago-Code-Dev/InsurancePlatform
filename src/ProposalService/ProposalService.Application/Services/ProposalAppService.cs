@@ -1,4 +1,5 @@
-﻿using ProposalService.Application.DTOs;
+﻿using Microsoft.EntityFrameworkCore;
+using ProposalService.Application.DTOs;
 using ProposalService.Application.Integration;
 using ProposalService.Application.Interfaces;
 using ProposalService.Domain.Entities;
@@ -28,6 +29,9 @@ public class ProposalAppService : IProposalAppService
                 new Document(customerDto.Document),
                 new Email(customerDto.Email)
             );
+
+            if (!Enum.TryParse<ContractType>(contractDto.Type, out var contractType))
+                return CustomResponse<ProposalDto>.Fail($"Invalid contract type: {contractDto.Type}");
 
             var contract = new Contract(
                 Enum.Parse<ContractType>(contractDto.Type),
@@ -60,36 +64,37 @@ public class ProposalAppService : IProposalAppService
 
     public async Task<CustomResponse<ProposalDto>> GetByIdAsync(Guid id)
     {
-        var proposal = await _proposalRepository.GetByIdAsync(id);
-        if (proposal == null)
-            return CustomResponse<ProposalDto>.Fail("Proposta não encontrada.");
+        try
+        {
+            var proposal = await _proposalRepository.GetByIdAsync(id);
 
-        return CustomResponse<ProposalDto>.Ok(MapToDto(proposal));
-    }
+            return proposal is null
+                ? CustomResponse<ProposalDto>.Fail("Proposal not found.")
+                : CustomResponse<ProposalDto>.Ok(MapToDto(proposal));
 
-    public async Task<CustomResponse<Result>> ApproveAsync(Guid proposalId)
+        }catch
+        {  return CustomResponse<ProposalDto>.InternalServerError();}
+     }
+
+    public async Task<CustomResponse<IEnumerable<ProposalDto>>> GetAllAsync()
     {
-        var proposal = await _proposalRepository.GetByIdAsync(proposalId);
-        if (proposal == null)
-            return CustomResponse<Result>.Fail("Proposta não encontrada.");
-
-        proposal.Approve();
-        await _proposalRepository.UpdateAsync(proposal);
-
-        return CustomResponse<Result>.Ok(Result.Success());
+        try
+        {
+            var proposals = await _proposalRepository.GetAllAsync();
+            var mapped = proposals.Select(MapToDto).ToList();
+            return CustomResponse<IEnumerable<ProposalDto>>.Ok(mapped);
+        }
+        catch
+        {
+            return CustomResponse<IEnumerable<ProposalDto>>.InternalServerError();
+        }
     }
 
-    public async Task<CustomResponse<Result>> RejectAsync(Guid proposalId)
-    {
-        var proposal = await _proposalRepository.GetByIdAsync(proposalId);
-        if (proposal == null)
-            return CustomResponse<Result>.Fail("Proposta não encontrada.");
+    public Task<CustomResponse<Result>> ApproveAsync(Guid proposalId) =>
+     ChangeStatusAsync(proposalId, p => p.Approve(), "Proposal successfully approved..");
 
-        proposal.Reject();
-        await _proposalRepository.UpdateAsync(proposal);
-
-        return CustomResponse<Result>.Ok(Result.Success());
-    }
+    public Task<CustomResponse<Result>> RejectAsync(Guid proposalId) =>
+       ChangeStatusAsync(proposalId, p => p.Reject(), "Proposal successfully rejected.");
 
     private static ProposalDto MapToDto(Proposal proposal) =>
         new()
@@ -102,15 +107,26 @@ public class ProposalAppService : IProposalAppService
             Status = proposal.Status.ToString()
         };
 
-    public async Task<CustomResponse<IEnumerable<ProposalDto>>> GetAllAsync()
+    private async Task<CustomResponse<Result>> ChangeStatusAsync( Guid proposalId,Action<Proposal> action,string successMessage)
     {
-        var proposals = await _proposalRepository.GetAllAsync();
+        try
+        {
+            var proposal = await _proposalRepository.GetByIdAsync(proposalId);
+            if (proposal is null)
+                return CustomResponse<Result>.Fail("Proposal not found.");
 
-        if (proposals == null || !proposals.Any())
-            return CustomResponse<IEnumerable<ProposalDto>>.Ok(new List<ProposalDto>());
+            action(proposal);
+            await _proposalRepository.UpdateAsync(proposal);
 
-        var mapped = proposals.Select(MapToDto).ToList();
-
-        return CustomResponse<IEnumerable<ProposalDto>>.Ok(mapped);
+            return CustomResponse<Result>.Ok(Result.Success(successMessage));
+        }
+        catch (ArgumentException ex)
+        {
+            return CustomResponse<Result>.Fail(ex.Message);
+        }
+        catch
+        {
+            return CustomResponse<Result>.InternalServerError();
+        }
     }
 }

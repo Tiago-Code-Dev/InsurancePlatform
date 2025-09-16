@@ -37,7 +37,7 @@ services:
       - RabbitMq__HostName=rabbitmq
       - RabbitMq__UserName=guest
       - RabbitMq__Password=guest
-
+      - Services__ProposalServiceUrl=http://proposalservice
   contractingservice:
     build:
       context: .

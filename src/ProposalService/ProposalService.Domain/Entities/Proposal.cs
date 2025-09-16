@@ -17,27 +17,31 @@ public class Proposal
 
     public Proposal(Customer customer, Contract contract)
     {
-        Id = Guid.NewGuid();
+       
         Customer = customer ?? throw new DomainException("Customer is required.");
         Contract = contract ?? throw new DomainException("Contract is required.");
+
+        Id = Guid.NewGuid();
         Status = ProposalStatus.Pending;
         CreatedAt = DateTime.UtcNow;
     }
 
     public void Approve()
     {
-        if (Status != ProposalStatus.Pending)
-            throw new DomainException("Only pending proposals can be approved.");
-
+        EnsureStatus(ProposalStatus.Pending, "Only pending proposals can be approved.");
         Status = ProposalStatus.Approved;
         ApprovedAt = DateTime.UtcNow;
     }
 
     public void Reject()
     {
-        if (Status != ProposalStatus.Pending)
-            throw new DomainException("Only pending proposals can be rejected.");
-
+        EnsureStatus(ProposalStatus.Pending, "Only pending proposals can be rejected.");
         Status = ProposalStatus.Rejected;
+    }
+
+    private void EnsureStatus(ProposalStatus expected, string message)
+    {
+        if (Status != expected)
+            throw new DomainException(message);
     }
 }

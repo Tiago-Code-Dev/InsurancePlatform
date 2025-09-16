@@ -32,12 +32,8 @@ namespace ProposalService.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
-        {
-            var result = await _proposalAppService.GetAllAsync();
-            return CustomResponse(result);
-        }
-
+        public async Task<IActionResult> GetAll() =>
+            CustomResponse(await _proposalAppService.GetAllAsync());
 
         [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetById(Guid id)
@@ -46,8 +42,8 @@ namespace ProposalService.API.Controllers
 
             if (result is null)
             {
-                NotifyError("Proposal not found.");
-                return CustomResponse();
+                NotifyError("Contract not found.");
+                return NotFound(CustomResponse());
             }
 
             return CustomResponse(result);

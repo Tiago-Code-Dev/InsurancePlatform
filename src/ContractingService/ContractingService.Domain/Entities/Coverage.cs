@@ -18,9 +18,15 @@ public class Coverage
         if (string.IsNullOrWhiteSpace(name))
             throw new DomainException("Coverage name cannot be empty.");
 
+        if (premium is null)
+            throw new DomainException("Premium is required.");
+
+        if (premium.Amount <= 0)
+            throw new DomainException("Premium must be greater than zero.");
+
         Id = Guid.NewGuid();
         Name = name;
         Type = type;
-        Premium = premium ?? throw new DomainException("Premium is required.");
+        Premium = premium;
     }
 }

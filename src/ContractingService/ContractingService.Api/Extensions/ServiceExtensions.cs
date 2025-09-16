@@ -17,6 +17,11 @@ public static class ServiceExtensions
         services.RegisterContractingMessaging();
         services.AddScoped<ExternalApiService>();
 
+        services.AddHttpClient("ProposalService", client =>
+        {
+            client.BaseAddress = new Uri(configuration["Services:ProposalServiceUrl"]);
+        });
+
         return services;
     }
 }
