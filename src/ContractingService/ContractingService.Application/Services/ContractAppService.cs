@@ -125,67 +125,6 @@ public class ContractAppService : IContractAppService
         }
     }
 
-    //public async Task<CustomResponse<Result>> ActivateAsync(Guid contractId)
-    //{
-    //    try
-    //    {
-    //        var contract = await _contractRepository.GetByIdAsync(contractId);
-
-    //        if (contract is null)
-    //            return CustomResponse<Result>.Fail("Contract not found.");
-
-    //        contract.Activate();
-    //        await _contractRepository.UpdateAsync(contract);
-
-    //        return CustomResponse<Result>.Ok(Result.Ok("Contract activated successfully."));
-    //    }
-    //    catch (Exception)
-    //    {
-    //        return CustomResponse<Result>.InternalServerError();
-    //    }
-    //}
-
-
-    //public async Task<CustomResponse<Result>> CancelAsync(Guid contractId)
-    //{
-    //    try
-    //    {
-    //        var contract = await _contractRepository.GetByIdAsync(contractId);
-
-    //        if (contract is null)
-    //            return CustomResponse<Result>.Fail("Contract not found.");
-
-    //        contract.Cancel();
-    //        await _contractRepository.UpdateAsync(contract);
-
-    //        return CustomResponse<Result>.Ok(Result.Ok("Contract canceled successfully."));
-    //    }
-    //    catch (Exception)
-    //    {
-    //        return CustomResponse<Result>.InternalServerError();
-    //    }
-    //}
-
-    //public async Task<CustomResponse<Result>> TerminateAsync(Guid contractId)
-    //{
-    //    try
-    //    {
-    //        var contract = await _contractRepository.GetByIdAsync(contractId);
-
-    //        if (contract is null)
-    //            return CustomResponse<Result>.Fail("Contract not found.");
-
-    //        contract.Terminate();
-    //        await _contractRepository.UpdateAsync(contract);
-
-    //        return CustomResponse<Result>.Ok(Result.Ok("Contract terminated successfully."));
-    //    }
-    //    catch (Exception)
-    //    {
-    //        return CustomResponse<Result>.InternalServerError();
-    //    }
-    //}
-
     private static ContractDto MapToDto(Contract contract) =>
          new(
              Id: contract.Id,

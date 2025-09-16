@@ -14,7 +14,7 @@ public static class HostExtensions
                   .Enrich.WithProcessId()
                   .WriteTo.Console()
                   .WriteTo.File("logs/proposal-log-.txt", rollingInterval: RollingInterval.Day)
-                  .WriteTo.Seq("http://localhost:5341") // opcional se usar Seq
+                  .WriteTo.Seq("http://localhost:5341")
                   .CreateLogger();
 
         return host.UseSerilog();

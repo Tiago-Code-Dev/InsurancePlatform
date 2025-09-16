@@ -33,18 +33,11 @@ public class ErrorHandlingMiddleware
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             context.Response.ContentType = "application/json";
 
-            //var response = new
-            //{
-            //    error = ex.Message,
-            //    traceId = context.TraceIdentifier
-            //};
-
             var response = CustomResponse<object>.InternalServerError();
 
             var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
-            await context.Response.WriteAsync(JsonSerializer.Serialize(response, options));
 
-           // await context.Response.WriteAsync(JsonSerializer.Serialize(response));
+            await context.Response.WriteAsync(JsonSerializer.Serialize(response, options));
         }
     }
 }
