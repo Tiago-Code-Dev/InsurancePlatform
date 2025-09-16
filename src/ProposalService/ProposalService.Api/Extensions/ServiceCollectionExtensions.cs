@@ -6,6 +6,7 @@ using ProposalService.Application.Services;
 using ProposalService.Domain.Interfaces;
 using ProposalService.Infrastructure.Context;
 using ProposalService.Infrastructure.Repositories;
+using Shared.CrossCutting.Middleware;
 using Shared.CrossCutting.Notifications;
 
 public static class ServiceCollectionExtensions
@@ -22,7 +23,8 @@ public static class ServiceCollectionExtensions
         {
             services.AddDbContext<ProposalDbContext>(o => o.UseSqlServer(conn));
         }
-        
+
+        services.AddCorrelationId();
         services.AddScoped<INotifier, Notifier>();
         services.AddScoped<IProposalRepository, ProposalRepository>();
         services.AddScoped<IProposalAppService, ProposalAppService>();

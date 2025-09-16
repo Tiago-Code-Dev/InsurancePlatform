@@ -1,4 +1,5 @@
 ﻿using ProposalService.Api.Extensions;
+using Serilog;
 using Shared.CrossCutting.Middleware;
 
 public static class ApplicationExtensions
@@ -10,6 +11,8 @@ public static class ApplicationExtensions
             app.UseSwaggerDocumentation(env);
         }
 
+        app.UseCorrelationId();              
+        app.UseSerilogRequestLogging();
         app.UseHttpsRedirection();
         app.UseJwtAuthenticationConfig();
         app.UseMiddleware<ErrorHandlingMiddleware>();

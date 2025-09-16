@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Serilog;
 using Shared.CrossCutting.Notifications;
 using Shared.CrossCutting.Response;
 
@@ -30,6 +31,9 @@ public abstract class MainController : ControllerBase
             {
                 var errorMsg = error.Exception == null ? error.ErrorMessage : error.Exception.Message;
                 _notifier.Handle(new Notification(field, errorMsg));
+
+                Log.Warning("Model validation error: {ErrorMessage} (Path: {Path}, TraceId: {TraceId})",
+                    errorMsg, HttpContext?.Request?.Path, HttpContext?.TraceIdentifier);
             }
         }
     }
@@ -43,6 +47,9 @@ public abstract class MainController : ControllerBase
 
         if (IsOperationValid())
         {
+            Log.Information("Request successful. Path: {Path}, TraceId: {TraceId}",
+               HttpContext?.Request?.Path, HttpContext?.TraceIdentifier);
+
             return Ok(CustomResponse<object>.Ok(result));
         }
 
@@ -53,11 +60,16 @@ public abstract class MainController : ControllerBase
                     : new MessageResponse(n.Field, n.Message)
             ).ToList();
 
+        Log.Warning("Request failed validation. Path: {Path}, TraceId: {TraceId}",
+            HttpContext?.Request?.Path, HttpContext?.TraceIdentifier);
         return BadRequest(CustomResponse<object>.Fail(messages));
     }
 
-    protected void NotifyError(string message) =>
-        _notifier.Handle(new Notification(message));
+    protected void NotifyError(string message) {
+       _notifier.Handle(new Notification(message));
+        Log.Warning("Custom error notified: {Message}, Path: {Path}, TraceId: {TraceId}",
+            message, HttpContext?.Request?.Path, HttpContext?.TraceIdentifier);
+    }
 
     protected IActionResult CustomResponse(ModelStateDictionary modelState)
     {

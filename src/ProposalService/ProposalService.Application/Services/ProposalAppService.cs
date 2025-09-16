@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using ProposalService.Application.DTOs;
 using ProposalService.Application.Integration;
 using ProposalService.Application.Interfaces;
@@ -13,15 +14,21 @@ public class ProposalAppService : IProposalAppService
 {
     private readonly IProposalRepository _proposalRepository;
     private readonly IProposalIntegrationEventPublisher _eventPublisher;
+    private readonly ILogger<ProposalAppService> _logger;
 
-    public ProposalAppService(IProposalRepository proposalRepository, IProposalIntegrationEventPublisher eventPublisher)
+    public ProposalAppService(IProposalRepository proposalRepository, IProposalIntegrationEventPublisher eventPublisher,
+        ILogger<ProposalAppService> logger)
     {
         _proposalRepository = proposalRepository;
         _eventPublisher = eventPublisher;
+        _logger = logger;
     }
 
     public async Task<CustomResponse<ProposalDto>> CreateAsync(CustomerDto customerDto, ContractDto contractDto)
     {
+        _logger.LogInformation("Starting proposal creation for customer {CustomerName}, Document {Document}",
+            customerDto.Name, customerDto.Document);
+
         try
         {
             var customer = new Customer(
@@ -31,7 +38,12 @@ public class ProposalAppService : IProposalAppService
             );
 
             if (!Enum.TryParse<ContractType>(contractDto.Type, out var contractType))
+            {
+                _logger.LogWarning("Invalid contract type {ContractType} for customer {CustomerName}",
+                    contractDto.Type, customerDto.Name);
+
                 return CustomResponse<ProposalDto>.Fail($"Invalid contract type: {contractDto.Type}");
+            }
 
             var contract = new Contract(
                 Enum.Parse<ContractType>(contractDto.Type),
@@ -44,6 +56,9 @@ public class ProposalAppService : IProposalAppService
 
             await _proposalRepository.AddAsync(proposal);
 
+            _logger.LogInformation("Proposal {ProposalId} created successfully for customer {CustomerName}",
+                proposal.Id, customerDto.Name);
+
             var proposalEvent = new ProposalCreatedEvent
             {
                 ProposalId = proposal.Id,
@@ -54,10 +69,13 @@ public class ProposalAppService : IProposalAppService
 
             await _eventPublisher.PublishAsync(proposalEvent);
 
+            _logger.LogInformation("ProposalCreatedEvent published for Proposal {ProposalId}", proposal.Id);
+
             return CustomResponse<ProposalDto>.Created(MapToDto(proposal));
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            _logger.LogError(ex, "Unexpected error while creating proposal for customer {CustomerName}", customerDto.Name);
             return CustomResponse<ProposalDto>.InternalServerError();
         }
     }
@@ -107,26 +125,20 @@ public class ProposalAppService : IProposalAppService
             Status = proposal.Status.ToString()
         };
 
-    private async Task<CustomResponse<Result>> ChangeStatusAsync( Guid proposalId,Action<Proposal> action,string successMessage)
+    private async Task<CustomResponse<Result>> ChangeStatusAsync(Guid id, Action<Proposal> action, string actionName)
     {
-        try
+        var proposal = await _proposalRepository.GetByIdAsync(id);
+        if (proposal is null)
         {
-            var proposal = await _proposalRepository.GetByIdAsync(proposalId);
-            if (proposal is null)
-                return CustomResponse<Result>.Fail("Proposal not found.");
+            _logger.LogWarning("Attempt to {Action} proposal {ProposalId} failed: not found", actionName, id);
+            return CustomResponse<Result>.Fail("Proposal not found.");
+        }
 
-            action(proposal);
-            await _proposalRepository.UpdateAsync(proposal);
+        action(proposal);
+        await _proposalRepository.UpdateAsync(proposal);
 
-            return CustomResponse<Result>.Ok(Result.Success(successMessage));
-        }
-        catch (ArgumentException ex)
-        {
-            return CustomResponse<Result>.Fail(ex.Message);
-        }
-        catch
-        {
-            return CustomResponse<Result>.InternalServerError();
-        }
+        _logger.LogInformation("Proposal {ProposalId} {Action} successfully", proposal.Id, actionName);
+
+        return CustomResponse<Result>.Ok(Result.Ok($"Proposal {actionName} successfully."));
     }
 }
