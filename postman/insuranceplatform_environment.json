@@ -1,0 +1,39 @@
+{
+	"id": "9bcbfadb-2128-4276-827b-366574618ad9",
+	"name": "InsurancePlatform",
+	"values": [
+		{
+			"key": "baseUrlProposal",
+			"value": "http://localhost:5001/api/v1/proposals",
+			"enabled": true
+		},
+		{
+			"key": "baseUrlContract",
+			"value": "http://localhost:5002/api/v1/contracts",
+			"enabled": true
+		},
+		{
+			"key": "baseUrlAuth",
+			"value": "http://localhost:5001/api/v1/auth",
+			"enabled": true
+		},
+		{
+			"key": "token",
+			"value": "",
+			"enabled": true
+		},
+		{
+			"key": "proposalId",
+			"value": "00000000-0000-0000-0000-000000000001",
+			"enabled": true
+		},
+		{
+			"key": "contractId",
+			"value": "00000000-0000-0000-0000-000000000002",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2025-09-16T07:14:05.603Z",
+	"_postman_exported_using": "Postman/11.63.1"
+}

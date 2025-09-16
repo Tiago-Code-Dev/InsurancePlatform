@@ -1,0 +1,213 @@
+{
+	"info": {
+		"_postman_id": "ea9fae17-f8bd-4647-b8d1-f306eb3e293d",
+		"name": "InsurancePlatform API",
+		"description": "Coleção com todas as rotas de Proposals, Contracts e Auth",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34623254",
+		"_collection_link": "https://g11111-6651.postman.co/workspace/g-Workspace~bd56dbfc-956d-4ff1-8002-ce12d2468371/collection/34623254-ea9fae17-f8bd-4647-b8d1-f306eb3e293d?action=share&source=collection_link&creator=34623254"
+	},
+	"item": [
+		{
+			"name": "Proposals",
+			"item": [
+				{
+					"name": "Create Proposal",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"customer\": { \"name\": \"João Silva\", \"document\": \"12345678901\" },\n  \"contract\": { \"number\": \"CT-001\", \"startDate\": \"2025-09-14T00:00:00Z\", \"endDate\": \"2026-09-14T00:00:00Z\", \"coverages\": [ { \"type\": \"Basic\", \"amount\": 10000 } ] }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrlProposal}}",
+							"host": [
+								"{{baseUrlProposal}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Proposal by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrlProposal}}/{{proposalId}}",
+							"host": [
+								"{{baseUrlProposal}}"
+							],
+							"path": [
+								"{{proposalId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Approve Proposal",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrlProposal}}/{{proposalId}}/approve",
+							"host": [
+								"{{baseUrlProposal}}"
+							],
+							"path": [
+								"{{proposalId}}",
+								"approve"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reject Proposal",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrlProposal}}/{{proposalId}}/reject",
+							"host": [
+								"{{baseUrlProposal}}"
+							],
+							"path": [
+								"{{proposalId}}",
+								"reject"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Proposal",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Contracts",
+			"item": [
+				{
+					"name": "Create Contract",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"insured\": { \"name\": \"Maria Oliveira\", \"document\": \"98765432100\", \"email\": \"maria@email.com\" },\n  \"coverages\": [ { \"name\": \"Cobertura Básica\", \"type\": \"Basic\", \"premium\": 150.00 } ]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrlContract}}",
+							"host": [
+								"{{baseUrlContract}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Contract by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrlContract}}/{{contractId}}",
+							"host": [
+								"{{baseUrlContract}}"
+							],
+							"path": [
+								"{{contractId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Terminate Contract",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrlContract}}/{{contractId}}/terminate",
+							"host": [
+								"{{baseUrlContract}}"
+							],
+							"path": [
+								"{{contractId}}",
+								"terminate"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth - Login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"username\": \"admin\",\n  \"password\": \"123456\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrlAuth}}/login",
+					"host": [
+						"{{baseUrlAuth}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
