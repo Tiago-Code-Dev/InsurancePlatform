@@ -282,7 +282,7 @@ namespace ProposalService.Tests.Unit.Features.Application.Services
     testRunner.When("I call the service to get the proposal by ID", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 38
-    testRunner.Then("the response should fail with message \"Proposta não encontrada.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+    testRunner.Then("the response should fail with message \"Proposal not found.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -347,7 +347,7 @@ namespace ProposalService.Tests.Unit.Features.Application.Services
     testRunner.When("I call the service to approve the proposal", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 49
-    testRunner.Then("the response should fail with message \"Proposta não encontrada.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+    testRunner.Then("the response should fail with message \"Proposal not found.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -412,7 +412,7 @@ namespace ProposalService.Tests.Unit.Features.Application.Services
     testRunner.When("I call the service to reject the proposal", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 60
-    testRunner.Then("the response should fail with message \"Proposta não encontrada.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+    testRunner.Then("the response should fail with message \"Proposal not found.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

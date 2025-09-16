@@ -31,14 +31,4 @@
         <Using Include="Xunit" />
     </ItemGroup>
 
-    <ItemGroup>
-        <Folder Include="Features\Application\Services\" />
-        <Folder Include="Features\Domain\Entities\" />
-        <Folder Include="Features\Domain\Services\" />
-        <Folder Include="Hooks\" />
-        <Folder Include="StepDefinitions\Application\Services\" />
-        <Folder Include="StepDefinitions\Domain\Entities\" />
-        <Folder Include="StepDefinitions\Domain\Services\" />
-    </ItemGroup>
-
 </Project>

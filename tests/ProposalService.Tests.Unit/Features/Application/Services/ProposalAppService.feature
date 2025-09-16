@@ -35,7 +35,7 @@
   Scenario: Get a proposal by non-existing ID
     Given no proposal exists with the requested ID
     When I call the service to get the proposal by ID
-    Then the response should fail with message "Proposta não encontrada."
+    Then the response should fail with message "Proposal not found."
 
   Scenario: Approve an existing proposal
     Given a proposal exists in the repository
@@ -46,7 +46,7 @@
   Scenario: Approve a non-existing proposal
     Given no proposal exists with the requested ID
     When I call the service to approve the proposal
-    Then the response should fail with message "Proposta não encontrada."
+    Then the response should fail with message "Proposal not found."
 
   Scenario: Reject an existing proposal
     Given a proposal exists in the repository
@@ -57,4 +57,4 @@
   Scenario: Reject a non-existing proposal
     Given no proposal exists with the requested ID
     When I call the service to reject the proposal
-    Then the response should fail with message "Proposta não encontrada."
+    Then the response should fail with message "Proposal not found."

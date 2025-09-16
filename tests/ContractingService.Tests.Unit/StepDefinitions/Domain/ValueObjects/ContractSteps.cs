@@ -21,14 +21,15 @@ namespace ContractingService.Tests.Unit.StepDefinitions.Domain.Entities
             _insured = new Insured(
                 "John Doe",
                 new Document("12345678901"),
-                new Email("john@doe.com")
+                new Email("john@doe.com"),
+                Guid.NewGuid()
             );
         }
 
         [Given(@"I have a valid contract")]
         public void GivenIHaveAValidContract()
         {
-            var insured = new Insured("John Doe", new Document("12345678901"), new Email("john@doe.com"));
+            var insured = new Insured("John Doe", new Document("12345678901"), new Email("john@doe.com"), Guid.NewGuid());
             _contract = new Contract(insured);
         }
 

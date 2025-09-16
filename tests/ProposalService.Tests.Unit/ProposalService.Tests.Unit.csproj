@@ -30,11 +30,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\_Fixtures\" />
-    <Folder Include="StepDefinitions\_Fixtures\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\src\ProposalService\ProposalService.Domain\ProposalService.Domain.csproj" />
     <ProjectReference Include="..\..\src\ProposalService\ProposalService.Application\ProposalService.Application.csproj" />
   </ItemGroup>
