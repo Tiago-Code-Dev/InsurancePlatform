@@ -9,10 +9,16 @@ namespace ProposalService.Infrastructure.Context
         {
             var optionsBuilder = new DbContextOptionsBuilder<ProposalDbContext>();
 
-            // Usa a mesma connection string do appsettings.json
             optionsBuilder.UseSqlServer(
-                "Server=localhost;Database=Insurance_Proposal;User Id=sa;Password=Your_password123;TrustServerCertificate=True"
-            );
+                "Server=localhost;Database=Insurance_Proposal;User Id=sa;Password=Your_password123;TrustServerCertificate=True",
+               sqlOptions =>
+               {
+                   sqlOptions.EnableRetryOnFailure(
+                       maxRetryCount: 5,
+                       maxRetryDelay: TimeSpan.FromSeconds(10),
+                       errorNumbersToAdd: null
+                   );
+               });
 
             return new ProposalDbContext(optionsBuilder.Options);
         }
