@@ -34,11 +34,7 @@ namespace ContractingService.Tests.Unit.Shared.Assertions
                     ["money negative"] = new[] { "Money", "Amount", "negative", "non-negative", ">= 0", "must be" },
                     ["money zero"] = new[] { "Money", "Amount", "zero", "must be greater than 0" },
                     ["money scale"] = new[] { "Money", "scale", "decimal places", "precision" },
-                    ["document checksum"] = new[] { "Document", "checksum", "digit", "invalid" },
-                    ["money zero"] = new[] { "zero", "must be greater than 0" },
-                    ["money scale"] = new[] { "scale", "decimal places", "precision" },
-                    ["document checksum"] = new[] { "checksum", "check digit", "invalid" },
-
+                    ["document checksum"] = new[] { "Document", "checksum", "check digit", "invalid" },
                 },
                 [AliasGroup.Contract] = new(StringComparer.OrdinalIgnoreCase)
                 {

@@ -139,7 +139,7 @@ namespace ContractingService.Tests.Unit.Features.Domain.Entities
     testRunner.When("I create the contract", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 13
-    testRunner.Then("a domain exception should be thrown with message \"Insured is required.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+    testRunner.Then("an operation exception should be thrown with message \"insured\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -558,7 +558,7 @@ this.ScenarioInitialize(scenarioInfo);
   testRunner.When("I create the contract", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 88
-  testRunner.Then("a domain exception should be thrown with message \"insured\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.Then("an operation exception should be thrown with message \"insured\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

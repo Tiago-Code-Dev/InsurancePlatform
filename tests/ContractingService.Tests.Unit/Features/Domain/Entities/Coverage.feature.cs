@@ -215,14 +215,14 @@ namespace ContractingService.Tests.Unit.Features.Domain.Entities
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Reject coverage with zero premium")]
+        [Xunit.SkippableFactAttribute(DisplayName="Reject coverage above max premium")]
         [Xunit.TraitAttribute("FeatureTitle", "Coverage validation with unique steps")]
-        [Xunit.TraitAttribute("Description", "Reject coverage with zero premium")]
-        public void RejectCoverageWithZeroPremium()
+        [Xunit.TraitAttribute("Description", "Reject coverage above max premium")]
+        public void RejectCoverageAboveMaxPremium()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Reject coverage with zero premium", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Reject coverage above max premium", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 27
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -234,43 +234,12 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 28
-  testRunner.Given("a coverage draft named \"Zero\" priced as 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+  testRunner.Given("a coverage draft named \"Big\" priced as 1000000000", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 29
   testRunner.When("the coverage draft is finalized for validation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 30
-  testRunner.Then("no domain error should occur", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="Reject coverage above max premium")]
-        [Xunit.TraitAttribute("FeatureTitle", "Coverage validation with unique steps")]
-        [Xunit.TraitAttribute("Description", "Reject coverage above max premium")]
-        public void RejectCoverageAboveMaxPremium()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Reject coverage above max premium", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 32
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 33
-  testRunner.Given("a coverage draft named \"Big\" priced as 1000000000", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 34
-  testRunner.When("the coverage draft is finalized for validation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 35
   testRunner.Then("no domain error should occur", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }

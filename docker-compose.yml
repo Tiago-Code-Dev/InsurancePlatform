@@ -38,6 +38,9 @@ services:
       - RabbitMq__UserName=guest
       - RabbitMq__Password=guest
       - Services__ProposalServiceUrl=http://proposalservice
+    volumes:
+      - proposalservice-dataprotection:/root/.aspnet/DataProtection-Keys
+
   contractingservice:
     build:
       context: .
@@ -55,3 +58,9 @@ services:
       - RabbitMq__HostName=rabbitmq
       - RabbitMq__UserName=guest
       - RabbitMq__Password=guest
+    volumes:
+      - contractingservice-dataprotection:/root/.aspnet/DataProtection-Keys
+
+volumes:
+  proposalservice-dataprotection:
+  contractingservice-dataprotection:

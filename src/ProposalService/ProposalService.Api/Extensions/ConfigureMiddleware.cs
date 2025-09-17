@@ -11,9 +11,15 @@ public static class ApplicationExtensions
             app.UseSwaggerDocumentation(env);
         }
 
-        app.UseCorrelationId();              
+        app.UseCorrelationId();
         app.UseSerilogRequestLogging();
-        app.UseHttpsRedirection();
+
+        // ✅ Só redireciona para HTTPS em produção
+        if (!env.IsDevelopment())
+        {
+            app.UseHttpsRedirection();
+        }
+
         app.UseJwtAuthenticationConfig();
         app.UseMiddleware<ErrorHandlingMiddleware>();
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Filters;
 
 namespace ProposalService.Api.Extensions;
 
@@ -30,7 +31,10 @@ public static class SwaggerExtensions
                     Array.Empty<string>()
                 }
             });
+            c.ExampleFilters();
         });
+
+        services.AddSwaggerExamplesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
 
         return services;
     }
@@ -40,7 +44,11 @@ public static class SwaggerExtensions
         if (env.IsDevelopment())
         {
             app.UseSwagger();
-            app.UseSwaggerUI();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Proposal API v1");
+                c.RoutePrefix = string.Empty;
+            });
         }
 
         return app;
