@@ -9,4 +9,9 @@ var app = builder.Build();
 app.ConfigureMiddleware(app.Environment);
 app.ConfigureEndpoints();
 
+if (builder.Configuration.GetValue<bool>("HttpsRedirection:Enabled"))
+{
+    app.UseHttpsRedirection();
+}
+
 app.Run();

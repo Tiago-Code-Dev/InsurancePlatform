@@ -8,6 +8,7 @@ using ProposalService.Domain.Interfaces;
 using ProposalService.Domain.ValueObjects;
 using Shared.CrossCutting.Messaging.Events;
 using Shared.CrossCutting.Response;
+using Microsoft.Extensions.Logging;
 using TechTalk.SpecFlow;
 
 namespace ProposalService.Tests.Unit.StepDefinitions.Application.Services;
@@ -19,7 +20,7 @@ public class ProposalAppServiceSteps
     private readonly Mock<IProposalRepository> _repositoryMock;
     private readonly Mock<IProposalIntegrationEventPublisher> _publisherMock;
     private readonly ProposalAppService _service;
-
+    private readonly Mock<ILogger<ProposalAppService>> _loggerMock;
     private CustomResponse<ProposalDto>? _proposalResponse;
     private CustomResponse<Result>? _resultResponse;
 
@@ -28,7 +29,12 @@ public class ProposalAppServiceSteps
         _context = context;
         _repositoryMock = new Mock<IProposalRepository>();
         _publisherMock = new Mock<IProposalIntegrationEventPublisher>();
-        _service = new ProposalAppService(_repositoryMock.Object, _publisherMock.Object);
+        _loggerMock = new Mock<ILogger<ProposalAppService>>();
+
+        _service = new ProposalAppService(
+        _repositoryMock.Object,
+        _publisherMock.Object,
+        _loggerMock.Object);
     }
 
     [Given(@"I have a valid customer DTO")]

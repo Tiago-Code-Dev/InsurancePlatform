@@ -7,11 +7,6 @@
     Then the contract should be created successfully
     And the contract status should be "Draft"
 
-  Scenario: Create a contract without insured
-    Given I have no insured
-    When I create the contract
-    Then a domain exception should be thrown with message "Insured is required."
-
   Scenario: Add a coverage to a draft contract
     Given I have a valid contract
     And I have a valid coverage
@@ -80,12 +75,6 @@ Scenario: Try to add coverage when contract is Active
   And I activate the contract with the coverage
   When I try to add another coverage
   Then a domain exception should be thrown with message "in Draft status"
-
-Scenario: Validate contract without insured
-  Given I have a valid contract
-  And I have no insured
-  When I create the contract
-  Then a domain exception should be thrown with message "insured"
 
 Scenario: Validate contract without coverages
   Given I have a valid contract

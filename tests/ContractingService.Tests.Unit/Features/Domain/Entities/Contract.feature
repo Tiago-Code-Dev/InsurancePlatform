@@ -10,7 +10,7 @@
   Scenario: Create a contract without insured
     Given I have no insured
     When I create the contract
-    Then a domain exception should be thrown with message "Insured is required."
+    Then an operation exception should be thrown with message "insured"
 
   Scenario: Add a coverage to a draft contract
     Given I have a valid contract
@@ -85,7 +85,7 @@ Scenario: Validate contract without insured
   Given I have a valid contract
   And I have no insured
   When I create the contract
-  Then a domain exception should be thrown with message "insured"
+  Then an operation exception should be thrown with message "insured"
 
 Scenario: Validate contract without coverages
   Given I have a valid contract

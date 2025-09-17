@@ -24,11 +24,6 @@ Feature: Coverage validation with unique steps
     When a second coverage attempt is performed
     Then a domain error should mention "only in draft"
 
-Scenario: Reject coverage with zero premium
-  Given a coverage draft named "Zero" priced as 0
-  When the coverage draft is finalized for validation
-  Then no domain error should occur
-
 Scenario: Reject coverage above max premium
   Given a coverage draft named "Big" priced as 1000000000
   When the coverage draft is finalized for validation

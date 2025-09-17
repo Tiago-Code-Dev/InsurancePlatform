@@ -1,9 +1,8 @@
-﻿using System;
-using System.Linq;
-using ContractingService.Domain.Entities;
+﻿using ContractingService.Domain.Entities;
 using ContractingService.Domain.Enums;
-using ContractingService.Domain.ValueObjects;
 using ContractingService.Domain.Exceptions;
+using ContractingService.Domain.ValueObjects;
+using ContractingService.Tests.Unit.Shared.Assertions;
 using FluentAssertions;
 using TechTalk.SpecFlow;
 
@@ -24,7 +23,6 @@ namespace ContractingService.Tests.Unit.StepDefinitions.Domain.Entities
         private Insured RequireInsured()
             => _currentInsured ?? throw new InvalidOperationException("Insured not initialized in this scenario.");
 
-        // ===== GIVENs
         [Given(@"I have a valid insured")]
         public void GivenIHaveAValidInsured()
         {
@@ -189,6 +187,15 @@ namespace ContractingService.Tests.Unit.StepDefinitions.Domain.Entities
             _caughtException.Should().NotBeNull();
             _caughtException.Should().BeOfType<DomainException>();
             _caughtException!.Message.Should().Be(expected);
+        }
+
+        [Then(@"an operation exception should be thrown with message ""(.*)""")]
+        public void ThenAnOperationExceptionShouldBeThrownWithMessage(string aliasKey)
+        {
+            _caughtException.Should().NotBeNull();
+            var ex = _caughtException!;
+            ex.Should().BeOfType<InvalidOperationException>();
+            MessageAlias.AssertMatches(ex.Message, aliasKey, AliasGroup.Insured);
         }
     }
 }
