@@ -4,6 +4,8 @@
 namespace AuthenticationService.Domain.Interfaces;
 public interface IRoleRepository
 {
-    Task<Role?> GetByNameAsync(string name, CancellationToken ct = default);
-    Task AddAsync(Role role, CancellationToken ct = default);
+    Task<Role?> GetByNameAsync(string roleName);
+    Task<List<Role>> GetAllAsync();
+    Task<bool> ExistsAsync(string roleName);
+    Task CreateAsync(Role role);
 }

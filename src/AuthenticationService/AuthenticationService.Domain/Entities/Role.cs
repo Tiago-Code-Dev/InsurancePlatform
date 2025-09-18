@@ -1,20 +1,8 @@
-﻿using AuthenticationService.Domain.Abstractions;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace AuthenticationService.Domain.Entities;
 
-public sealed class Role : Entity, IAggregateRoot
+public class Role : IdentityRole
 {
-    public string Name { get; private set; }
-
-    private Role() { Name = string.Empty; }
-    private Role(string name) => SetName(name);
-
-    public static Role Create(string name) => new(name);
-
-    public void SetName(string name)
-    {
-        if (string.IsNullOrWhiteSpace(name))
-            throw new DomainException("Role name cannot be empty.");
-        Name = name.Trim();
-    }
+    public string Description { get; set; }
 }
